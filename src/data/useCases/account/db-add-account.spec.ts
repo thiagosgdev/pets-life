@@ -1,6 +1,6 @@
 import { AddAccountParams } from "@/domain/useCases/account/add-account";
 import { AccountModel } from "@/domain/models/account";
-import { DbAddAccount } from "@/domain/useCases/account/db-add-account";
+import { DbAddAccount } from "@/data/useCases/account/db-add-account";
 import { AddAccountRepository } from "@/data/protocols/account/add-account-repository";
 
 const mockAccountModel = (): AccountModel => ({
@@ -50,7 +50,16 @@ describe("DbAddAccount", () => {
     test("Should call AddAccountRepository with correct data", async () => {
         const { addAccountRepositoryStub, sut } = makeSut();
         const addSpy = jest.spyOn(addAccountRepositoryStub, "add");
-        sut.add(mockAddAccountParams());
+        await sut.add(mockAddAccountParams());
         expect(addSpy).toHaveBeenCalledWith(mockAddAccountParams());
+    });
+
+    test("Should throw if AddAccountRepository throws", async () => {
+        const { addAccountRepositoryStub, sut } = makeSut();
+        jest.spyOn(addAccountRepositoryStub, "add").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.add(mockAddAccountParams());
+        await expect(promise).rejects.toThrow();
     });
 });

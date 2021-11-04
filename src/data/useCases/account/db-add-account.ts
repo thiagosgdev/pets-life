@@ -1,6 +1,9 @@
 import { AddAccountRepository } from "@/data/protocols/account/add-account-repository";
 import { AccountModel } from "@/domain/models/account";
-import { AddAccount, AddAccountParams } from "./add-account";
+import {
+    AddAccount,
+    AddAccountParams,
+} from "@/domain/useCases/account/add-account";
 
 export class DbAddAccount implements AddAccount {
     constructor(private readonly addAccountRepository: AddAccountRepository) {}
