@@ -13,6 +13,7 @@
     "plugins": ["@typescript-eslint"],
     "rules": {
         "quotes": [2, "double", { "avoidEscape": true }],
-        "semi": [2, "always", { "omitLastInOneLineBlock": true }]
+        "semi": [2, "always", { "omitLastInOneLineBlock": true }],
+        "no-unused-vars": [2, "never"]
     }
 }

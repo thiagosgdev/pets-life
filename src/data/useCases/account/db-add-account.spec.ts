@@ -1,6 +1,7 @@
 import { AddAccountParams } from "@/domain/useCases/account/add-account";
 import { AccountModel } from "@/domain/models/account";
 import { DbAddAccount } from "@/domain/useCases/account/db-add-account";
+import { AddAccountRepository } from "@/data/protocols/account/add-account-repository";
 
 const mockAccountModel = (): AccountModel => ({
     id: "any_id",
@@ -23,16 +24,32 @@ const mockAddAccountParams = (): AddAccountParams => ({
     password: "any_password",
 });
 
+const mockAddAccountRepository = (): AddAccountRepository => {
+    class AddAccountRepositoryStub {
+        async add(accountData: AddAccountParams): Promise<AccountModel> {
+            return Promise.resolve(mockAccountModel());
+        }
+    }
+    return new AddAccountRepositoryStub();
+};
+
+type SutTypes = {
+    sut: DbAddAccount;
+    addAccountRepositoryStub: AddAccountRepository;
+};
+
+const makeSut = (): SutTypes => {
+    const addAccountRepositoryStub = mockAddAccountRepository();
+    const sut = new DbAddAccount(addAccountRepositoryStub);
+    return {
+        addAccountRepositoryStub,
+        sut,
+    };
+};
 describe("DbAddAccount", () => {
     test("Should call AddAccountRepository with correct data", async () => {
-        class mockAddAccountRepository {
-            async add(accountData: AddAccountParams): Promise<AccountModel> {
-                return Promise.resolve(mockAccountModel());
-            }
-        }
-        const addAccountRepositoryStub = new mockAddAccountRepository();
+        const { addAccountRepositoryStub, sut } = makeSut();
         const addSpy = jest.spyOn(addAccountRepositoryStub, "add");
-        const sut = new DbAddAccount(addAccountRepositoryStub);
         sut.add(mockAddAccountParams());
         expect(addSpy).toHaveBeenCalledWith(mockAddAccountParams());
     });
