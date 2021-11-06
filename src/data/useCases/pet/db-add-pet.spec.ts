@@ -16,7 +16,7 @@ const mockPetModel = (): PetModel => ({
     updated_at: new Date(),
 });
 
-const mockPetParams = (): AddPetParams => ({
+const mockAddPetParams = (): AddPetParams => ({
     name: "any_name",
     birthdate: new Date(),
     gender: 1,
@@ -59,7 +59,16 @@ describe("DBAddPet", () => {
     test("Should ensure that DbAddPet calls AddPetsReposioty with correct values", async () => {
         const { sut, addPetsRepositoryStub } = makeSut();
         const addSpy = jest.spyOn(addPetsRepositoryStub, "add");
-        await sut.add(mockPetParams());
-        expect(addSpy).toHaveBeenCalledWith(mockPetParams());
+        await sut.add(mockAddPetParams());
+        expect(addSpy).toHaveBeenCalledWith(mockAddPetParams());
+    });
+
+    test("Should throw if AddAccountRepository throws", async () => {
+        const { addPetsRepositoryStub, sut } = makeSut();
+        jest.spyOn(addPetsRepositoryStub, "add").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.add(mockAddPetParams());
+        await expect(promise).rejects.toThrow();
     });
 });
