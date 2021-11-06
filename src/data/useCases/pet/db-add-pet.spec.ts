@@ -1,4 +1,4 @@
-import { AddPetRepository } from "@/data/protocols/db/pet/add-pet-repository";
+import { AddPetsRepository } from "@/data/protocols/db/pet/add-pets-repository";
 import { PetModel } from "@/domain/models/pet";
 import { AddPetParams } from "@/domain/useCases/pet/add-pet";
 import { DbAddPet } from "./db-add-pet";
@@ -25,6 +25,28 @@ const mockPetParams = (): AddPetParams => ({
     accountt_id: "any_account_id",
 });
 
+const mockAddPetsRepository = (): AddPetsRepository => {
+    class AddPetsRepositoryStub implements AddPetsRepository {
+        async add(data: AddPetParams): Promise<PetModel> {
+            return Promise.resolve(mockPetModel());
+        }
+    }
+    return new AddPetsRepositoryStub();
+};
+
+type SutTypes = {
+    sut: DbAddPet;
+    addPetsRepositoryStub: AddPetsRepository;
+};
+const makeSut = (): SutTypes => {
+    const addPetsRepositoryStub = mockAddPetsRepository();
+    const sut = new DbAddPet(addPetsRepositoryStub);
+    return {
+        addPetsRepositoryStub,
+        sut,
+    };
+};
+
 describe("DBAddPet", () => {
     beforeAll(() => {
         MockDate.set(new Date());
@@ -35,14 +57,8 @@ describe("DBAddPet", () => {
     });
 
     test("Should ensure that DbAddPet calls AddPetsReposioty with correct values", async () => {
-        class AddPetRepositoryStub implements AddPetRepository {
-            async add(data: AddPetParams): Promise<PetModel> {
-                return Promise.resolve(mockPetModel());
-            }
-        }
-        const addPetRepositoryStub = new AddPetRepositoryStub();
-        const sut = new DbAddPet(addPetRepositoryStub);
-        const addSpy = jest.spyOn(addPetRepositoryStub, "add");
+        const { sut, addPetsRepositoryStub } = makeSut();
+        const addSpy = jest.spyOn(addPetsRepositoryStub, "add");
         await sut.add(mockPetParams());
         expect(addSpy).toHaveBeenCalledWith(mockPetParams());
     });
