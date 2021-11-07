@@ -10,6 +10,8 @@ const mockAccountModel = (): AccountModel => ({
     name: "any_name",
     lastName: "any_last_name",
     cellphone: "any_cellphone",
+    chip_number: "any_chip_number",
+    chip_website: "any_website",
     zipCode: "any_zip_code",
     email: "any_email@mail.com",
     password: "any_password",
