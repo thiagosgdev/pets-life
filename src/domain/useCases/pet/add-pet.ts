@@ -5,6 +5,8 @@ export type AddPetParams = {
     name: string;
     birthdate: Date;
     gender: Gender;
+    chip_number?: string;
+    chip_website?: string;
     breed: string;
     weigth: number;
     accountt_id: string;
