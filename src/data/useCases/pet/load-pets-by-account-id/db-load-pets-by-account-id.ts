@@ -8,6 +8,9 @@ export class DbLoadPetsByAccountId implements LoadPetsByAccountId {
     ) {}
     async load(accountId: string): Promise<PetModel[]> {
         const pets = await this.loadPetsByAccountIdRepository.load(accountId);
+        if (!pets) {
+            return null;
+        }
         return pets;
     }
 }
