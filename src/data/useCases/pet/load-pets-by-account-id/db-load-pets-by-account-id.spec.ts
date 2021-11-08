@@ -66,11 +66,21 @@ describe("DbLoadPetsByAccountId", () => {
     });
 
     test("Should return the list of pets from the account", async () => {
-        const { sut, loadPetsByAccountIdRepositoryStub } = makeSut();
+        const { sut } = makeSut();
         const pets = await sut.load("any_account_id");
         expect(pets).toBeTruthy();
         expect(pets[0].id).toBe("any_id");
         expect(pets[0].name).toBe("any_name");
         expect(pets[1].id).toBe("other_id");
+    });
+
+    test("Should throw if LoadPetsByAccountIdRepository throws", async () => {
+        const { loadPetsByAccountIdRepositoryStub, sut } = makeSut();
+        jest.spyOn(
+            loadPetsByAccountIdRepositoryStub,
+            "load",
+        ).mockReturnValueOnce(Promise.reject(new Error()));
+        const promise = sut.load("any_account_id");
+        await expect(promise).rejects.toThrow();
     });
 });
