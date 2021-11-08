@@ -53,6 +53,7 @@ type SutTypes = {
     addPetsRepositoryStub: AddPetsRepository;
     loadPetByChipNumberStub: LoadPetByChipNumber;
 };
+
 const makeSut = (): SutTypes => {
     const addPetsRepositoryStub = mockAddPetsRepository();
     const loadPetByChipNumberStub = mockLoadPetByChipNumber();
@@ -107,5 +108,15 @@ describe("DBAddPet", () => {
         ).mockReturnValueOnce(Promise.resolve(mockPetModel()));
         const pet = await sut.add(mockAddPetParams());
         expect(pet).toBe(null);
+    });
+
+    test("Should throw if LoadPetByChipNumber throws", async () => {
+        const { loadPetByChipNumberStub, sut } = makeSut();
+        jest.spyOn(
+            loadPetByChipNumberStub,
+            "loadByChipNumber",
+        ).mockReturnValueOnce(Promise.reject(new Error()));
+        const promise = sut.add(mockAddPetParams());
+        await expect(promise).rejects.toThrow();
     });
 });
