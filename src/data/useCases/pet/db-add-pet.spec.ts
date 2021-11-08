@@ -33,7 +33,7 @@ const mockAddPetParams = (): AddPetParams => ({
 const mockLoadPetByChipNumber = (): LoadPetByChipNumber => {
     class LoadPetByChipNumberStub implements LoadPetByChipNumber {
         async loadByChipNumber(chipNumber: string): Promise<PetModel> {
-            return Promise.resolve(mockPetModel());
+            return Promise.resolve(null);
         }
     }
     return new LoadPetByChipNumberStub();
@@ -80,7 +80,7 @@ describe("DBAddPet", () => {
         expect(addSpy).toHaveBeenCalledWith(mockAddPetParams());
     });
 
-    test("Should throw if AddAccountRepository throws", async () => {
+    test("Should throw if AddPetsRepository throws", async () => {
         const { addPetsRepositoryStub, sut } = makeSut();
         jest.spyOn(addPetsRepositoryStub, "add").mockReturnValueOnce(
             Promise.reject(new Error()),
@@ -97,5 +97,15 @@ describe("DBAddPet", () => {
         );
         await sut.add(mockAddPetParams());
         expect(loadPetByChipNumberSpy).toHaveBeenCalledWith("any_chip_number");
+    });
+
+    test("Should return null if LoadPetByChipNumber returns a pet", async () => {
+        const { sut, loadPetByChipNumberStub } = makeSut();
+        jest.spyOn(
+            loadPetByChipNumberStub,
+            "loadByChipNumber",
+        ).mockReturnValueOnce(Promise.resolve(mockPetModel()));
+        const pet = await sut.add(mockAddPetParams());
+        expect(pet).toBe(null);
     });
 });

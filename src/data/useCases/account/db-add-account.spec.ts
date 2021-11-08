@@ -123,7 +123,7 @@ describe("DbAddAccount", () => {
         expect(loadByEmailSpy).toHaveBeenCalledWith("any_email@mail.com");
     });
 
-    test("Should return if LoadAccountByEmailRepository returns an account", async () => {
+    test("Should return null if LoadAccountByEmailRepository returns an account", async () => {
         const { sut, loadAccountByEmailRepositoryStub } = makeSut();
         jest.spyOn(
             loadAccountByEmailRepositoryStub,
