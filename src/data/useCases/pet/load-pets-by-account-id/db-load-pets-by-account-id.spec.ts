@@ -25,7 +25,7 @@ const mockPetModels = (): PetModel[] => [
         chip_website: "other_chip_website",
         breed: "other_breed",
         weigth: 1,
-        accountt_id: "other_account_id",
+        accountt_id: "any_account_id",
         created_at: new Date(),
         updated_at: new Date(),
     },
@@ -63,5 +63,14 @@ describe("DbLoadPetsByAccountId", () => {
         const loadSpy = jest.spyOn(loadPetsByAccountIdRepositoryStub, "load");
         await sut.load("any_account_id");
         expect(loadSpy).toHaveBeenCalledWith("any_account_id");
+    });
+
+    test("Should return the list of pets from the account", async () => {
+        const { sut, loadPetsByAccountIdRepositoryStub } = makeSut();
+        const pets = await sut.load("any_account_id");
+        expect(pets).toBeTruthy();
+        expect(pets[0].id).toBe("any_id");
+        expect(pets[0].name).toBe("any_name");
+        expect(pets[1].id).toBe("other_id");
     });
 });
