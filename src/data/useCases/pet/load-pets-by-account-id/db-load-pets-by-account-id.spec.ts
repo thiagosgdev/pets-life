@@ -83,4 +83,14 @@ describe("DbLoadPetsByAccountId", () => {
         const promise = sut.load("any_account_id");
         await expect(promise).rejects.toThrow();
     });
+
+    test("Should return null if LoadPetsByAccountIdRepository returns null", async () => {
+        const { sut, loadPetsByAccountIdRepositoryStub } = makeSut();
+        jest.spyOn(
+            loadPetsByAccountIdRepositoryStub,
+            "load",
+        ).mockReturnValueOnce(Promise.resolve(null));
+        const pets = await sut.load("any_account_id");
+        expect(pets).toBeNull();
+    });
 });
