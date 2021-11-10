@@ -53,4 +53,10 @@ describe("Account Postgres Repository", () => {
         const account = await sut.loadByEmail("any_email@mail.com");
         expect(account).toBeTruthy();
     });
+
+    test("Should return null if loadByEmail doesn't find an account", async () => {
+        const { sut } = makeSut();
+        const account = await sut.loadByEmail("any_email@mail.com");
+        expect(account).toBeFalsy();
+    });
 });
