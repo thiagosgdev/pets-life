@@ -46,4 +46,11 @@ describe("Account Postgres Repository", () => {
         const account = await sut.add(mockAddAccountParams());
         expect(account).toHaveProperty("id");
     });
+
+    test("Should an account on loadByEmail success", async () => {
+        const { sut } = makeSut();
+        await sut.add(mockAddAccountParams());
+        const account = await sut.loadByEmail("any_email@mail.com");
+        expect(account).toBeTruthy();
+    });
 });
