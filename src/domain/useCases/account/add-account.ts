@@ -2,9 +2,9 @@ import { AccountModel } from "@/domain/models/account";
 
 export type AddAccountParams = {
     name: string;
-    lastName: string;
+    last_name: string;
     cellphone: string;
-    zipCode: string;
+    zip_code: string;
     email: string;
     password: string;
 };

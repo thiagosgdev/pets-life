@@ -1,9 +1,9 @@
 export type AccountModel = {
     id: string;
     name: string;
-    lastName: string;
+    last_name: string;
     cellphone: string;
-    zipCode: string;
+    zip_code: string;
     email: string;
     password: string;
     created_at: Date;
