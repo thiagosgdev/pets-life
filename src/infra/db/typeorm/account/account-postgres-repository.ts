@@ -21,6 +21,9 @@ export class AccountPostgresRepository
 
     async loadByEmail(email: string): Promise<AccountModel> {
         const account = await this.repository.findOne({ email });
-        return account;
+        if (account) {
+            return account;
+        }
+        return null;
     }
 }
