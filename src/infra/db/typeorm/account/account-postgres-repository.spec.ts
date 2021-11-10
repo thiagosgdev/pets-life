@@ -1,10 +1,6 @@
 import { AddAccountParams } from "@/domain/useCases/account/add-account";
-//import CreateConnection from "@/infra/db/typeorm/helpers/typeorm-helper";
 import { connection } from "@/infra/db/typeorm/helpers/typeorm-helper";
-import { Connection } from "typeorm";
 import { AccountPostgresRepository } from "./account-postgres-repository";
-
-let newConnection: Connection;
 
 const mockAddAccountParams = (): AddAccountParams => ({
     name: "any_name",
@@ -30,8 +26,6 @@ describe("Account Postgres Repository", () => {
     beforeAll(async () => {
         let migrations = await connection.create();
         await migrations.runMigrations();
-        //newConnection = await CreateConnection();
-        //await newConnection.runMigrations();
     });
 
     beforeEach(() => {
