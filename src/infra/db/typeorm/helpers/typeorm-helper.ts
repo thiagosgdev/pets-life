@@ -5,10 +5,21 @@ import {
     Connection,
 } from "typeorm";
 
+//export default async (): Promise<Connection> => {
+//    const defaultOptions = await getConnectionOptions();
+//    return createConnection(
+//        Object.assign(defaultOptions, {
+//            database:
+//                process.env.NODE_ENV === "develop"
+//                    ? "db_pets_test"
+//                    : defaultOptions.database,
+//        })
+//    );
+//};
 export const connection = {
-    async create() {
+    async create(): Promise<Connection> {
         const defaultOptions = await getConnectionOptions();
-        await createConnection(
+        return await createConnection(
             Object.assign(defaultOptions, {
                 database:
                     process.env.NODE_ENV === "develop"
@@ -17,6 +28,7 @@ export const connection = {
             }),
         );
     },
+
     async close() {
         await getConnection().close();
     },

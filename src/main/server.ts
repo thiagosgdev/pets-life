@@ -1,10 +1,14 @@
-import { newConnection } from "@/infra/db/typeorm/helpers/TypeORMHelper";
+import { connection } from "@/infra/db/typeorm/helpers/typeorm-helper";
+//import createConnection from "@/infra/db/typeorm/helpers/typeorm-helper";
+import "dotenv/config";
 import express from "express";
 import "reflect-metadata";
 
 const app = express();
 
-newConnection();
+//createConnection();
+
+connection.create();
 
 app.use(express.json());
 

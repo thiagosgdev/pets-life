@@ -8,11 +8,9 @@ import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-a
 const mockAccountModel = (): AccountModel => ({
     id: "any_id",
     name: "any_name",
-    lastName: "any_last_name",
+    last_name: "any_last_name",
     cellphone: "any_cellphone",
-    chip_number: "any_chip_number",
-    chip_website: "any_website",
-    zipCode: "any_zip_code",
+    zip_code: "any_zip_code",
     email: "any_email@mail.com",
     password: "any_password",
     created_at: new Date(),
@@ -21,9 +19,9 @@ const mockAccountModel = (): AccountModel => ({
 
 const mockAddAccountParams = (): AddAccountParams => ({
     name: "any_name",
-    lastName: "any_last_name",
+    last_name: "any_last_name",
     cellphone: "any_cellphone",
-    zipCode: "any_zip_code",
+    zip_code: "any_zip_code",
     email: "any_email@mail.com",
     password: "any_password",
 });
