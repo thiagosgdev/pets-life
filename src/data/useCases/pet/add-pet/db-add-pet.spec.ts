@@ -14,7 +14,7 @@ const mockPetModel = (): PetModel => ({
     chip_website: "any_chip_website",
     breed: "any_breed",
     weigth: 1,
-    accountt_id: "any_account_id",
+    account_id: "any_account_id",
     created_at: new Date(),
     updated_at: new Date(),
 });
@@ -27,7 +27,7 @@ const mockAddPetParams = (): AddPetParams => ({
     chip_website: "any_chip_website",
     breed: "any_breed",
     weigth: 1,
-    accountt_id: "any_account_id",
+    account_id: "any_account_id",
 });
 
 const mockLoadPetByChipNumber = (): LoadPetByChipNumberRepository => {
