@@ -35,7 +35,7 @@ const mockLoadPetsByAccountIdRepository = (): LoadPetsByAccountIdRepository => {
     class LoadPetsByAccountIdRepositoryStub
         implements LoadPetsByAccountIdRepository
     {
-        async load(): Promise<PetModel[]> {
+        async loadByAccountId(): Promise<PetModel[]> {
             return Promise.resolve(mockPetModels());
         }
     }
@@ -60,14 +60,17 @@ const makeSut = (): SutTypes => {
 describe("DbLoadPetsByAccountId", () => {
     test("Should call LoadPetsByAccountIdRepository with correct value", async () => {
         const { sut, loadPetsByAccountIdRepositoryStub } = makeSut();
-        const loadSpy = jest.spyOn(loadPetsByAccountIdRepositoryStub, "load");
-        await sut.load("any_account_id");
+        const loadSpy = jest.spyOn(
+            loadPetsByAccountIdRepositoryStub,
+            "loadByAccountId",
+        );
+        await sut.loadByAccountId("any_account_id");
         expect(loadSpy).toHaveBeenCalledWith("any_account_id");
     });
 
     test("Should return the list of pets from the account", async () => {
         const { sut } = makeSut();
-        const pets = await sut.load("any_account_id");
+        const pets = await sut.loadByAccountId("any_account_id");
         expect(pets).toBeTruthy();
         expect(pets[0].id).toBe("any_id");
         expect(pets[0].name).toBe("any_name");
@@ -78,9 +81,9 @@ describe("DbLoadPetsByAccountId", () => {
         const { loadPetsByAccountIdRepositoryStub, sut } = makeSut();
         jest.spyOn(
             loadPetsByAccountIdRepositoryStub,
-            "load",
+            "loadByAccountId",
         ).mockReturnValueOnce(Promise.reject(new Error()));
-        const promise = sut.load("any_account_id");
+        const promise = sut.loadByAccountId("any_account_id");
         await expect(promise).rejects.toThrow();
     });
 
@@ -88,9 +91,9 @@ describe("DbLoadPetsByAccountId", () => {
         const { sut, loadPetsByAccountIdRepositoryStub } = makeSut();
         jest.spyOn(
             loadPetsByAccountIdRepositoryStub,
-            "load",
+            "loadByAccountId",
         ).mockReturnValueOnce(Promise.resolve(null));
-        const pets = await sut.load("any_account_id");
+        const pets = await sut.loadByAccountId("any_account_id");
         expect(pets).toBeNull();
     });
 });

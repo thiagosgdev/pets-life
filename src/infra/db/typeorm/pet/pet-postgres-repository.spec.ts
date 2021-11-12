@@ -61,4 +61,16 @@ describe("Pet Postgres Repository", () => {
         );
         expect(pet).toHaveProperty("id");
     });
+
+    test("Should load all the Pets from an user", async () => {
+        const { sut, addAccountPostgresRepository } = makeSut();
+        const account = await addAccountPostgresRepository.add(
+            mockAddAccountParams(),
+        );
+        await sut.add(
+            Object.assign(mockAddPetParams(), { account_id: account.id }),
+        );
+        const pets = await sut.loadByAccountId(account.id);
+        expect(pets.length).toBe(1);
+    });
 });
