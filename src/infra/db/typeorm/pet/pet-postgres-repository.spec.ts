@@ -73,4 +73,12 @@ describe("Pet Postgres Repository", () => {
         const pets = await sut.loadByAccountId(account.id);
         expect(pets.length).toBe(1);
     });
+    test("Should return null if not Pet is found", async () => {
+        const { sut, addAccountPostgresRepository } = makeSut();
+        const account = await addAccountPostgresRepository.add(
+            mockAddAccountParams(),
+        );
+        const pets = await sut.loadByAccountId(account.id);
+        expect(pets).toBeNull();
+    });
 });
