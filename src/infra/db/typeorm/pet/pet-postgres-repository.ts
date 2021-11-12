@@ -2,7 +2,7 @@ import { Pet } from "@/domain/entities/Pet";
 import { PetModel } from "@/domain/models/pet";
 import { AddPet, AddPetParams } from "@/domain/useCases/pet/add-pet";
 import { LoadPetsByAccountId } from "@/domain/useCases/pet/load-pets-by-account-id";
-import { getRepository, Repository } from "typeorm";
+import { AdvancedConsoleLogger, getRepository, Repository } from "typeorm";
 
 export class PetPostgresRepository implements AddPet, LoadPetsByAccountId {
     private repository: Repository<Pet>;
@@ -16,7 +16,8 @@ export class PetPostgresRepository implements AddPet, LoadPetsByAccountId {
         return pet;
     }
 
-    async load(account_id: string): Promise<PetModel[]> {
-        return null;
+    async loadByAccountId(account_id: string): Promise<PetModel[]> {
+        const pets = this.repository.find({ account_id });
+        return pets;
     }
 }
