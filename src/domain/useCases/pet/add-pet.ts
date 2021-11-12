@@ -9,9 +9,9 @@ export type AddPetParams = {
     chip_website?: string;
     breed: string;
     weigth: number;
-    accountt_id: string;
+    account_id: string;
 };
 
 export interface AddPet {
-    add(data: AddPetParams): Promise<PetModel>;
+    add(pet_data: AddPetParams): Promise<PetModel>;
 }

@@ -1,3 +1,5 @@
+import { AccountPostgresRepository } from "@/infra/db/typeorm/account/account-postgres-repository";
+import { Account } from "../entities/Account";
 import { Gender } from "../types/gender-enum";
 
 export type PetModel = {
@@ -9,7 +11,7 @@ export type PetModel = {
     gender: Gender;
     breed: string;
     weigth: number;
-    accountt_id: string;
+    account_id: string;
     created_at: Date;
     updated_at: Date;
 };

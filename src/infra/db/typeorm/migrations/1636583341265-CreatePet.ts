@@ -45,6 +45,7 @@ export class CreatePet1636583341265 implements MigrationInterface {
                     {
                         name: "account_id",
                         type: "uuid",
+                        isNullable: true,
                     },
                     {
                         name: "created_at",
