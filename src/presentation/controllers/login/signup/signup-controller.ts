@@ -6,6 +6,11 @@ export class SignUpController implements Controller {
     constructor(private readonly addAccount: AddAccount) {}
     async handle(request: HttpRequest): Promise<HttpResponse> {
         const account = await this.addAccount.add(request.body);
-        return null;
+        if (account) {
+            return {
+                status: 200,
+                body: account,
+            };
+        }
     }
 }
