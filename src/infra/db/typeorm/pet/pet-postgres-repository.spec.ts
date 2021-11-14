@@ -93,4 +93,11 @@ describe("Pet Postgres Repository", () => {
         const pet = await sut.loadByChipNumber("any_chip_number");
         expect(pet).toHaveProperty("id");
     });
+
+    test("Should return null if no Pet is found on loadByChipNumber", async () => {
+        const { sut, addAccountPostgresRepository } = makeSut();
+        await addAccountPostgresRepository.add(mockAddAccountParams());
+        const pet = await sut.loadByChipNumber("any_chip_number");
+        expect(pet).toBeNull();
+    });
 });
