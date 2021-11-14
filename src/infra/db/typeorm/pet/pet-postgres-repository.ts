@@ -29,6 +29,9 @@ export class PetPostgresRepository
 
     async loadByChipNumber(chip_number: string): Promise<PetModel> {
         const pet = await this.repository.findOne({ chip_number });
-        return pet;
+        if (pet) {
+            return pet;
+        }
+        return null;
     }
 }
