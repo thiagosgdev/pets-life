@@ -73,12 +73,24 @@ describe("Pet Postgres Repository", () => {
         const pets = await sut.loadByAccountId(account.id);
         expect(pets.length).toBe(1);
     });
-    test("Should return null if not Pet is found", async () => {
+    test("Should return null if no Pet is found", async () => {
         const { sut, addAccountPostgresRepository } = makeSut();
         const account = await addAccountPostgresRepository.add(
             mockAddAccountParams(),
         );
         const pets = await sut.loadByAccountId(account.id);
         expect(pets).toBeNull();
+    });
+
+    test("Should be able to add a new Pet", async () => {
+        const { sut, addAccountPostgresRepository } = makeSut();
+        const account = await addAccountPostgresRepository.add(
+            mockAddAccountParams(),
+        );
+        await sut.add(
+            Object.assign(mockAddPetParams(), { account_id: account.id }),
+        );
+        const pet = await sut.loadByChipNumber("any_chip_number");
+        expect(pet).toHaveProperty("id");
     });
 });
