@@ -2,12 +2,13 @@ import { JwtAdapter } from "./jwt-adapter";
 
 import jwt from "jsonwebtoken";
 
+jest.mock("jsonwebtoken", () => ({
+    async sign(): Promise<string> {
+        return Promise.resolve("any_token");
+    },
+}));
+
 describe("JWT-Adapter", () => {
-    jest.mock("jsonwebtoken", () => ({
-        encrypt(value: string): Promise<string> {
-            return Promise.resolve("any_token");
-        },
-    }));
     describe("Encrypt", () => {
         type SutTypes = {
             sut: JwtAdapter;
@@ -26,6 +27,12 @@ describe("JWT-Adapter", () => {
                 { id: "any_value" },
                 "secret",
             );
+        });
+
+        test("Should return token on encrypt success", async () => {
+            const { sut } = makeSut();
+            const accessToken = await sut.encrypt("any_value");
+            expect(accessToken).toBe("any_token");
         });
     });
 });
