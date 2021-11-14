@@ -77,5 +77,11 @@ describe("SignUp Controller", () => {
         });
     });
 
+    test("Should return status 200 on AddAccount success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
+    });
+
     test("", () => {});
 });
