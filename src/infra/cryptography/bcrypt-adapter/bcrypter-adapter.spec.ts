@@ -48,4 +48,13 @@ describe("Bcrypt Adapter", () => {
             expect(promise).rejects.toThrow();
         });
     });
+
+    describe("Compare", () => {
+        test("Should call compare with correct values", async () => {
+            const { sut } = makeSut();
+            const hashSpy = jest.spyOn(bcrypt, "compare");
+            await sut.compare("any_value", "hash");
+            expect(hashSpy).toHaveBeenCalledWith("any_value", "hash");
+        });
+    });
 });
