@@ -13,6 +13,10 @@ export class SignUpController implements Controller {
                     body: account,
                 };
             }
+            return {
+                status: 403,
+                body: "E-mail já utilizado",
+            };
         } catch (error) {
             return {
                 status: 500,
