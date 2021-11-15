@@ -95,5 +95,14 @@ describe("SignUp Controller", () => {
         });
     });
 
+    test("Should return status 403 if AddAccount returns null", async () => {
+        const { sut, addAccountStub } = makeSut();
+        jest.spyOn(addAccountStub, "add").mockReturnValueOnce(
+            Promise.resolve(null),
+        );
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(403);
+    });
+
     test("", () => {});
 });
