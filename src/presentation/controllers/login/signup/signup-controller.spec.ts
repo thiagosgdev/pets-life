@@ -27,15 +27,6 @@ const mockAccountModel = (): AccountModel => ({
     updated_at: new Date(),
 });
 
-const mockAddAccountParams = (): AddAccountParams => ({
-    name: "any_name",
-    last_name: "any_last_name",
-    cellphone: "any_cellphone",
-    zip_code: "any_zip_code",
-    email: "any_email@mail.com",
-    password: "any_password",
-});
-
 const makeFakeRequest = (): HttpRequest => ({
     body: {
         name: "any_name",
@@ -83,6 +74,15 @@ describe("SignUp Controller", () => {
         expect(response.status).toBe(200);
     });
 
+    test("Should return status 403 if AddAccount returns null", async () => {
+        const { sut, addAccountStub } = makeSut();
+        jest.spyOn(addAccountStub, "add").mockReturnValueOnce(
+            Promise.resolve(null),
+        );
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(403);
+    });
+
     test("Should return 500 if AddAccount throws", async () => {
         const { sut, addAccountStub } = makeSut();
         jest.spyOn(addAccountStub, "add").mockReturnValueOnce(
@@ -93,15 +93,6 @@ describe("SignUp Controller", () => {
             status: 500,
             body: new Error(),
         });
-    });
-
-    test("Should return status 403 if AddAccount returns null", async () => {
-        const { sut, addAccountStub } = makeSut();
-        jest.spyOn(addAccountStub, "add").mockReturnValueOnce(
-            Promise.resolve(null),
-        );
-        const response = await sut.handle(makeFakeRequest());
-        expect(response.status).toBe(403);
     });
 
     test("", () => {});
