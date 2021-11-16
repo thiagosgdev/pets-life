@@ -4,9 +4,10 @@ import {
     AddAccountParams,
 } from "@/domain/useCases/account/add-account";
 import { HttpRequest } from "@/presentation/protocols/http";
+import { Validation } from "@/presentation/protocols/validation";
 import { SignUpController } from "./signup-controller";
 
-const makeAddAccount = (): AddAccount => {
+const mockAddAccount = (): AddAccount => {
     class AddAccountStub implements AddAccount {
         async add(data: AddAccountParams): Promise<AccountModel> {
             return Promise.resolve(mockAccountModel());
@@ -15,6 +16,14 @@ const makeAddAccount = (): AddAccount => {
     return new AddAccountStub();
 };
 
+const mockValidation = (): Validation => {
+    class ValidationStub implements Validation {
+        validate(input: any): Error {
+            return null;
+        }
+    }
+    return new ValidationStub();
+};
 const mockAccountModel = (): AccountModel => ({
     id: "any_id",
     name: "any_name",
@@ -40,14 +49,17 @@ const makeFakeRequest = (): HttpRequest => ({
 type SutTypes = {
     sut: SignUpController;
     addAccountStub: AddAccount;
+    validationStub: Validation;
 };
 
 const makeSut = (): SutTypes => {
-    const addAccountStub = makeAddAccount();
-    const sut = new SignUpController(addAccountStub);
+    const addAccountStub = mockAddAccount();
+    const validationStub = mockValidation();
+    const sut = new SignUpController(addAccountStub, validationStub);
     return {
         sut,
         addAccountStub,
+        validationStub,
     };
 };
 
@@ -56,15 +68,9 @@ describe("SignUp Controller", () => {
         test("Should call AddAccount with the correct values", async () => {
             const { sut, addAccountStub } = makeSut();
             const addSpy = jest.spyOn(addAccountStub, "add");
-            await sut.handle(makeFakeRequest());
-            expect(addSpy).toHaveBeenCalledWith({
-                name: "any_name",
-                last_name: "any_last_name",
-                cellphone: "any_cellphone",
-                zip_code: "any_zip_code",
-                email: "any_email@mail.com",
-                password: "any_password",
-            });
+            const httpRequest = makeFakeRequest();
+            await sut.handle(httpRequest);
+            expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
         });
     });
 
@@ -93,6 +99,14 @@ describe("SignUp Controller", () => {
             status: 500,
             body: new Error(),
         });
+    });
+
+    test("Should call validation with correct values", () => {
+        const { sut, validationStub } = makeSut();
+        const validateSpy = jest.spyOn(validationStub, "validate");
+        const httpRequest = makeFakeRequest();
+        sut.handle(httpRequest);
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
     });
 
     test("", () => {});
