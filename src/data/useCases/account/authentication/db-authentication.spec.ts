@@ -163,5 +163,14 @@ describe("Authentication", () => {
         expect(updateTokenSpy).toHaveBeenCalledWith("any_token", "any_id");
     });
 
+    test("Should throw if Encrypter throws", async () => {
+        const { sut, updateAccessTokenStub } = makeSut();
+        jest.spyOn(updateAccessTokenStub, "updateToken").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.authenticate(mockAuthenticationParams());
+        await expect(promise).rejects.toThrow();
+    });
+
     test("", () => {});
 });
