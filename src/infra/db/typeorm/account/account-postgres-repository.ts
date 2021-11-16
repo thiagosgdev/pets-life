@@ -32,6 +32,11 @@ export class AccountPostgresRepository
     }
 
     async updateToken(token: string, id: string): Promise<void> {
-        await this.repository.update(id, { token });
+        const numRows = await (
+            await this.repository.update(id, { token })
+        ).affected;
+        if (numRows <= 0) {
+            return null;
+        }
     }
 }
