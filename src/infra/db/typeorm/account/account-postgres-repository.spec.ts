@@ -61,4 +61,13 @@ describe("Account Postgres Repository", () => {
         await sut.updateToken("any_token", account.id);
         expect(updateTokenSpy).toHaveBeenCalledWith("any_token", account.id);
     });
+
+    test("Should return null if updateToken doesn't find an account", async () => {
+        const { sut } = makeSut();
+        const response = await sut.updateToken(
+            "any_token",
+            "e5012938-321f-4835-8496-db02831bef9c",
+        );
+        expect(response).toBeNull();
+    });
 });

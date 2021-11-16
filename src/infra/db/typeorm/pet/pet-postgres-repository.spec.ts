@@ -44,11 +44,11 @@ describe("Pet Postgres Repository", () => {
         await migrations.runMigrations();
     });
 
-    beforeEach(() => {
-        connection.clear();
+    beforeEach(async () => {
+        await connection.clear();
     });
-    afterAll(() => {
-        connection.close();
+    afterAll(async () => {
+        await connection.close();
     });
 
     test("Should be able to add a new Pet", async () => {
