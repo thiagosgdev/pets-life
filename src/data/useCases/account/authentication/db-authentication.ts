@@ -12,7 +12,9 @@ export class DbAuthentication implements Authentication {
     ) {}
 
     async authenticate(data: AuthenticationParams): Promise<string> {
-        await this.loadAccountByEmail.loadByEmail(data.email);
-        return null;
+        const account = await this.loadAccountByEmail.loadByEmail(data.email);
+        if (account) {
+            return null;
+        }
     }
 }
