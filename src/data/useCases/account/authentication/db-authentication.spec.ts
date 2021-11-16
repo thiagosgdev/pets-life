@@ -129,5 +129,10 @@ describe("Authentication", () => {
         expect(encryptSpy).toHaveBeenLastCalledWith("any_id");
     });
 
+    test("Shoudl return a token on Encrypter success", async () => {
+        const { sut, encrypterStub } = makeSut();
+        const token = await sut.authenticate(mockAuthenticationParams());
+        expect(token).toBe("any_token");
+    });
     test("", () => {});
 });
