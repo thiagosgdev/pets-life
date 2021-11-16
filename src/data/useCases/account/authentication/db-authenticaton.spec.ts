@@ -1,8 +1,18 @@
+import { Encrypter } from "@/data/protocols/cryptography/Encrypter";
 import { HashComparer } from "@/data/protocols/cryptography/Hash-Comparer";
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
 import { AccountModel } from "@/domain/models/account";
 import { AuthenticationParams } from "@/domain/useCases/account/authenticaton";
 import { DbAuthentication } from "./db-authentication";
+
+const mockEncrypter = (): Encrypter => {
+    class EncrypterStub implements Encrypter {
+        async encrypt(data: string): Promise<string> {
+            return Promise.resolve("any_token");
+        }
+    }
+    return new EncrypterStub();
+};
 
 const mockHashComparer = (): HashComparer => {
     class HashComparerStub implements HashComparer {
@@ -39,17 +49,24 @@ const mockAccountModel = (): AccountModel => ({
 type SutTypes = {
     sut: DbAuthentication;
     hashComparerStub: HashComparer;
-    loadAccountByEmaiLStub;
+    loadAccountByEmaiLStub: LoadAccountByEmailRepository;
+    encrypterStub: Encrypter;
 };
 
 const makeSut = (): SutTypes => {
     const hashComparerStub = mockHashComparer();
+    const encrypterStub = mockEncrypter();
     const loadAccountByEmaiLStub = mockLoadAccountByEmail();
-    const sut = new DbAuthentication(loadAccountByEmaiLStub, hashComparerStub);
+    const sut = new DbAuthentication(
+        loadAccountByEmaiLStub,
+        hashComparerStub,
+        encrypterStub,
+    );
     return {
         sut,
         hashComparerStub,
         loadAccountByEmaiLStub,
+        encrypterStub,
     };
 };
 
@@ -103,6 +120,13 @@ describe("Authentication", () => {
         );
         const promise = sut.authenticate(mockAuthenticationParams());
         await expect(promise).rejects.toThrow();
+    });
+
+    test("Should call Encrypter with the correct values", async () => {
+        const { sut, encrypterStub } = makeSut();
+        const encryptSpy = jest.spyOn(encrypterStub, "encrypt");
+        await sut.authenticate(mockAuthenticationParams());
+        expect(encryptSpy).toHaveBeenLastCalledWith("any_id");
     });
 
     test("", () => {});
