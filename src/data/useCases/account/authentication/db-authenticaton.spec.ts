@@ -80,6 +80,15 @@ describe("Authentication", () => {
         expect(account).toBe(null);
     });
 
+    test("Should throw if AddAccountRepository throws", async () => {
+        const { sut, loadAccountByEmaiLStub } = makeSut();
+        jest.spyOn(loadAccountByEmaiLStub, "loadByEmail").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.authenticate(mockAuthenticationParams());
+        await expect(promise).rejects.toThrow();
+    });
+
     test("Should call Hasher with the correct value", async () => {
         const { sut, hasherStub } = makeSut();
         const hasherSpy = jest.spyOn(hasherStub, "hash");
