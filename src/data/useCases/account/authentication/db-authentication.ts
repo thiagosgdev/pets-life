@@ -13,7 +13,7 @@ export class DbAuthentication implements Authentication {
 
     async authenticate(data: AuthenticationParams): Promise<string> {
         const account = await this.loadAccountByEmail.loadByEmail(data.email);
-        if (account) {
+        if (!account) {
             return null;
         }
         const hashedPassword = await this.hasher.hash(data.password);

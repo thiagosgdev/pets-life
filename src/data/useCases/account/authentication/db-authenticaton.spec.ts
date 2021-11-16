@@ -18,7 +18,7 @@ const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
         implements LoadAccountByEmailRepository
     {
         async loadByEmail(email: string): Promise<AccountModel> {
-            return Promise.resolve(null);
+            return Promise.resolve(mockAccountModel());
         }
     }
     return new LoadAccountByEmailRepositoryStub();
@@ -71,10 +71,10 @@ describe("Authentication", () => {
         expect(loadByEmailSpy).toHaveBeenCalledWith("any_email");
     });
 
-    test("Should return null if LoadAccountByEmail returns an account", async () => {
+    test("Should return null if LoadAccountByEmail returns null", async () => {
         const { sut, loadAccountByEmaiLStub } = makeSut();
         jest.spyOn(loadAccountByEmaiLStub, "loadByEmail").mockReturnValueOnce(
-            Promise.resolve(mockAccountModel()),
+            Promise.resolve(null),
         );
         const account = await sut.authenticate(mockAuthenticationParams());
         expect(account).toBe(null);
