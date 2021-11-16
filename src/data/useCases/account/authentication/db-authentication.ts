@@ -16,5 +16,6 @@ export class DbAuthentication implements Authentication {
         if (account) {
             return null;
         }
+        const hashedPassword = await this.hasher.hash(data.password);
     }
 }
