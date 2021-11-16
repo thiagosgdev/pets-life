@@ -3,6 +3,8 @@ import {
     AddAccount,
     AddAccountParams,
 } from "@/domain/useCases/account/add-account";
+import { MissingParamError } from "@/presentation/errors/missing-param-error";
+import { badRequest } from "@/presentation/helpers/http/http-helper";
 import { HttpRequest } from "@/presentation/protocols/http";
 import { Validation } from "@/presentation/protocols/validation";
 import { SignUpController } from "./signup-controller";
@@ -101,12 +103,23 @@ describe("SignUp Controller", () => {
         });
     });
 
-    test("Should call validation with correct values", () => {
+    test("Should call validation with correct values", async () => {
         const { sut, validationStub } = makeSut();
         const validateSpy = jest.spyOn(validationStub, "validate");
         const httpRequest = makeFakeRequest();
-        sut.handle(httpRequest);
+        await sut.handle(httpRequest);
         expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
+    });
+
+    test("Should return 400 if Validation returns an Error", async () => {
+        const { sut, validationStub } = makeSut();
+        jest.spyOn(validationStub, "validate").mockReturnValueOnce(
+            new MissingParamError("any_field"),
+        );
+        const response = await sut.handle(makeFakeRequest());
+        expect(response).toEqual(
+            badRequest(new MissingParamError("any_field")),
+        );
     });
 
     test("", () => {});
