@@ -53,4 +53,12 @@ describe("Account Postgres Repository", () => {
         const account = await sut.loadByEmail("any_email@mail.com");
         expect(account).toBeFalsy();
     });
+
+    test("Should call updateToken with the correct values", async () => {
+        const { sut } = makeSut();
+        const account = await sut.add(mockAddAccountParams());
+        const updateTokenSpy = jest.spyOn(sut, "updateToken");
+        await sut.updateToken("any_token", account.id);
+        expect(updateTokenSpy).toHaveBeenCalledWith("any_token", account.id);
+    });
 });
