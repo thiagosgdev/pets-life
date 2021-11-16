@@ -1,9 +1,17 @@
 import { Encrypter } from "@/data/protocols/cryptography/Encrypter";
 import { HashComparer } from "@/data/protocols/cryptography/Hash-Comparer";
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
+import { UpdateAccessTokenRepository } from "@/data/protocols/db/account/update-access-token-repository";
 import { AccountModel } from "@/domain/models/account";
 import { AuthenticationParams } from "@/domain/useCases/account/authenticaton";
 import { DbAuthentication } from "./db-authentication";
+
+const mockUpdateAccessToken = (): UpdateAccessTokenRepository => {
+    class UpdateAccessTokenStub implements UpdateAccessTokenRepository {
+        async updateToken(token: string, id: string): Promise<void> {}
+    }
+    return new UpdateAccessTokenStub();
+};
 
 const mockEncrypter = (): Encrypter => {
     class EncrypterStub implements Encrypter {
@@ -51,22 +59,26 @@ type SutTypes = {
     hashComparerStub: HashComparer;
     loadAccountByEmaiLStub: LoadAccountByEmailRepository;
     encrypterStub: Encrypter;
+    updateAccessTokenStub: UpdateAccessTokenRepository;
 };
 
 const makeSut = (): SutTypes => {
     const hashComparerStub = mockHashComparer();
     const encrypterStub = mockEncrypter();
+    const updateAccessTokenStub = mockUpdateAccessToken();
     const loadAccountByEmaiLStub = mockLoadAccountByEmail();
     const sut = new DbAuthentication(
         loadAccountByEmaiLStub,
         hashComparerStub,
         encrypterStub,
+        updateAccessTokenStub,
     );
     return {
         sut,
         hashComparerStub,
         loadAccountByEmaiLStub,
         encrypterStub,
+        updateAccessTokenStub,
     };
 };
 
@@ -142,6 +154,13 @@ describe("Authentication", () => {
         );
         const promise = sut.authenticate(mockAuthenticationParams());
         await expect(promise).rejects.toThrow();
+    });
+
+    test("Should call UpdateAccessTokenRepository with the correct values", async () => {
+        const { sut, updateAccessTokenStub } = makeSut();
+        const updateTokenSpy = jest.spyOn(updateAccessTokenStub, "updateToken");
+        await sut.authenticate(mockAuthenticationParams());
+        expect(updateTokenSpy).toHaveBeenCalledWith("any_token", "any_id");
     });
 
     test("", () => {});
