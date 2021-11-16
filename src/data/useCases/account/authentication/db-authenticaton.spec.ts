@@ -79,4 +79,13 @@ describe("Authentication", () => {
         const account = await sut.authenticate(mockAuthenticationParams());
         expect(account).toBe(null);
     });
+
+    test("Should call Hasher with the correct value", async () => {
+        const { sut, hasherStub } = makeSut();
+        const hasherSpy = jest.spyOn(hasherStub, "hash");
+        await sut.authenticate(mockAuthenticationParams());
+        expect(hasherSpy).toHaveBeenCalledWith("any_password");
+    });
+
+    test("", () => {});
 });
