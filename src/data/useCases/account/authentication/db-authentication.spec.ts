@@ -130,9 +130,19 @@ describe("Authentication", () => {
     });
 
     test("Shoudl return a token on Encrypter success", async () => {
-        const { sut, encrypterStub } = makeSut();
+        const { sut } = makeSut();
         const token = await sut.authenticate(mockAuthenticationParams());
         expect(token).toBe("any_token");
     });
+
+    test("Should throw if Encrypter throws", async () => {
+        const { sut, encrypterStub } = makeSut();
+        jest.spyOn(encrypterStub, "encrypt").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.authenticate(mockAuthenticationParams());
+        await expect(promise).rejects.toThrow();
+    });
+
     test("", () => {});
 });
