@@ -1,16 +1,16 @@
-import { Hasher } from "@/data/protocols/cryptography/Hasher";
+import { HashComparer } from "@/data/protocols/cryptography/Hash-Comparer";
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
 import { AccountModel } from "@/domain/models/account";
 import { AuthenticationParams } from "@/domain/useCases/account/authenticaton";
 import { DbAuthentication } from "./db-authentication";
 
-const mockHasher = (): Hasher => {
-    class HasherStub implements Hasher {
-        async hash(value: string): Promise<string> {
-            return Promise.resolve("any_hash");
+const mockHashComparer = (): HashComparer => {
+    class HashComparerStub implements HashComparer {
+        async compare(value: string, hash: string): Promise<boolean> {
+            return Promise.resolve(true);
         }
     }
-    return new HasherStub();
+    return new HashComparerStub();
 };
 
 const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
@@ -38,17 +38,17 @@ const mockAccountModel = (): AccountModel => ({
 
 type SutTypes = {
     sut: DbAuthentication;
-    hasherStub: Hasher;
+    hashComparerStub: HashComparer;
     loadAccountByEmaiLStub;
 };
 
 const makeSut = (): SutTypes => {
-    const hasherStub = mockHasher();
+    const hashComparerStub = mockHashComparer();
     const loadAccountByEmaiLStub = mockLoadAccountByEmail();
-    const sut = new DbAuthentication(loadAccountByEmaiLStub, hasherStub);
+    const sut = new DbAuthentication(loadAccountByEmaiLStub, hashComparerStub);
     return {
         sut,
-        hasherStub,
+        hashComparerStub,
         loadAccountByEmaiLStub,
     };
 };
@@ -89,16 +89,16 @@ describe("Authentication", () => {
         await expect(promise).rejects.toThrow();
     });
 
-    test("Should call Hasher with the correct value", async () => {
-        const { sut, hasherStub } = makeSut();
-        const hasherSpy = jest.spyOn(hasherStub, "hash");
+    test("Should call HasheComparer with the correct value", async () => {
+        const { sut, hashComparerStub } = makeSut();
+        const hasherSpy = jest.spyOn(hashComparerStub, "compare");
         await sut.authenticate(mockAuthenticationParams());
-        expect(hasherSpy).toHaveBeenCalledWith("any_password");
+        expect(hasherSpy).toHaveBeenCalledWith("any_password", "any_password");
     });
 
-    test("Should throw if Hasher throws", async () => {
-        const { sut, hasherStub } = makeSut();
-        jest.spyOn(hasherStub, "hash").mockReturnValueOnce(
+    test("Should throw if HasheComparer throws", async () => {
+        const { sut, hashComparerStub } = makeSut();
+        jest.spyOn(hashComparerStub, "compare").mockReturnValueOnce(
             Promise.reject(new Error()),
         );
         const promise = sut.authenticate(mockAuthenticationParams());

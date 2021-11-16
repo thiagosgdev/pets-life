@@ -1,4 +1,4 @@
-import { Hasher } from "@/data/protocols/cryptography/Hasher";
+import { HashComparer } from "@/data/protocols/cryptography/Hash-Comparer";
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
 import {
     Authentication,
@@ -8,14 +8,18 @@ import {
 export class DbAuthentication implements Authentication {
     constructor(
         private readonly loadAccountByEmail: LoadAccountByEmailRepository,
-        private readonly hasher: Hasher,
+        private readonly hashComparer: HashComparer,
     ) {}
 
     async authenticate(data: AuthenticationParams): Promise<string> {
         const account = await this.loadAccountByEmail.loadByEmail(data.email);
-        if (!account) {
-            return null;
+        if (account) {
+            const isValid = await this.hashComparer.compare(
+                data.password,
+                account.password,
+            );
         }
-        const hashedPassword = await this.hasher.hash(data.password);
+
+        return null;
     }
 }
