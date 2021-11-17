@@ -159,5 +159,11 @@ describe("SignUp Controller", () => {
                 password: "any_password",
             });
         });
+
+        test("Should return an access token on authenticate success", async () => {
+            const { sut } = makeSut();
+            const response = await sut.handle(makeFakeRequest());
+            expect(response).toEqual({ body: "any_token", status: 200 });
+        });
     });
 });
