@@ -1,6 +1,9 @@
 import { AddPet } from "@/domain/useCases/pet/add-pet";
-import { Controller } from "@/presentation/protocols/controller";
-import { HttpRequest, HttpResponse } from "@/presentation/protocols/http";
+import {
+    HttpRequest,
+    HttpResponse,
+    Controller,
+} from "@/presentation/protocols";
 
 export class AddPetController implements Controller {
     constructor(private readonly addPet: AddPet) {}

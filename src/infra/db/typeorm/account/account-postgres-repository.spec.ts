@@ -1,15 +1,6 @@
-import { AddAccountParams } from "@/domain/useCases/account/add-account";
+import { mockAddAccountParams } from "@/domain/test";
 import { connection } from "@/infra/db/typeorm/helpers/typeorm-helper";
 import { AccountPostgresRepository } from "./account-postgres-repository";
-
-const mockAddAccountParams = (): AddAccountParams => ({
-    name: "any_name",
-    last_name: "any_last_name",
-    cellphone: "any_cellphone",
-    zip_code: "any_zip_code",
-    email: "any_email@mail.com",
-    password: "any_password",
-});
 
 type SutTypes = {
     sut: AccountPostgresRepository;

@@ -1,5 +1,4 @@
-import { AddAccount } from "@/domain/useCases/account/add-account";
-import { Authentication } from "@/domain/useCases/account/authenticaton";
+import { AddAccount, Authentication } from "@/domain/useCases/account";
 import {
     badRequest,
     created,
@@ -7,9 +6,12 @@ import {
     ok,
     serverError,
 } from "@/presentation/helpers/http/http-helper";
-import { Controller } from "@/presentation/protocols/controller";
-import { HttpRequest, HttpResponse } from "@/presentation/protocols/http";
-import { Validation } from "@/presentation/protocols/validation";
+import {
+    Validation,
+    HttpRequest,
+    HttpResponse,
+    Controller,
+} from "@/presentation/protocols";
 
 export class SignUpController implements Controller {
     constructor(

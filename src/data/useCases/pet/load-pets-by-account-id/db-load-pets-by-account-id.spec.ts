@@ -1,46 +1,6 @@
 import { LoadPetsByAccountIdRepository } from "@/data/protocols/db/pet/load-pets-by-account-id-repository";
-import { PetModel } from "@/domain/models/pet";
+import { mockLoadPetsByAccountIdRepository } from "@/data/test";
 import { DbLoadPetsByAccountId } from "./db-load-pets-by-account-id";
-
-const mockPetModels = (): PetModel[] => [
-    {
-        id: "any_id",
-        name: "any_name",
-        birthdate: new Date(),
-        gender: 1,
-        chip_number: "any_chip_number",
-        chip_website: "any_chip_website",
-        breed: "any_breed",
-        weigth: 1,
-        account_id: "any_account_id",
-        created_at: new Date(),
-        updated_at: new Date(),
-    },
-    {
-        id: "other_id",
-        name: "other_name",
-        birthdate: new Date(),
-        gender: 1,
-        chip_number: "other_chip_number",
-        chip_website: "other_chip_website",
-        breed: "other_breed",
-        weigth: 1,
-        account_id: "any_account_id",
-        created_at: new Date(),
-        updated_at: new Date(),
-    },
-];
-
-const mockLoadPetsByAccountIdRepository = (): LoadPetsByAccountIdRepository => {
-    class LoadPetsByAccountIdRepositoryStub
-        implements LoadPetsByAccountIdRepository
-    {
-        async loadByAccountId(): Promise<PetModel[]> {
-            return Promise.resolve(mockPetModels());
-        }
-    }
-    return new LoadPetsByAccountIdRepositoryStub();
-};
 
 type SutTypes = {
     sut: DbLoadPetsByAccountId;

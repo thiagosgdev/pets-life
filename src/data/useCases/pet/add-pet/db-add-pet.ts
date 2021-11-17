@@ -1,5 +1,8 @@
-import { AddPetsRepository } from "@/data/protocols/db/pet/add-pets-repository";
-import { LoadPetByChipNumberRepository } from "@/data/protocols/db/pet/load-pet-by-chip-number-repository";
+import {
+    AddPetsRepository,
+    LoadPetByChipNumberRepository,
+} from "@/data/protocols/db/pet";
+import {} from "@/data/protocols/db/pet/load-pet-by-chip-number-repository";
 import { PetModel } from "@/domain/models/pet";
 import { AddPet, AddPetParams } from "@/domain/useCases/pet/add-pet";
 

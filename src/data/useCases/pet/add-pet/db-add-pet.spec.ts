@@ -1,52 +1,14 @@
-import { AddPetsRepository } from "@/data/protocols/db/pet/add-pets-repository";
-import { PetModel } from "@/domain/models/pet";
-import { AddPetParams } from "@/domain/useCases/pet/add-pet";
+import {
+    AddPetsRepository,
+    LoadPetByChipNumberRepository,
+} from "@/data/protocols/db/pet";
 import { DbAddPet } from "./db-add-pet";
 import MockDate from "mockdate";
-import { LoadPetByChipNumberRepository } from "@/data/protocols/db/pet/load-pet-by-chip-number-repository";
-
-const mockPetModel = (): PetModel => ({
-    id: "any_id",
-    name: "any_name",
-    birthdate: new Date(),
-    gender: 1,
-    chip_number: "any_chip_number",
-    chip_website: "any_chip_website",
-    breed: "any_breed",
-    weigth: 1,
-    account_id: "any_account_id",
-    created_at: new Date(),
-    updated_at: new Date(),
-});
-
-const mockAddPetParams = (): AddPetParams => ({
-    name: "any_name",
-    birthdate: new Date(),
-    gender: 1,
-    chip_number: "any_chip_number",
-    chip_website: "any_chip_website",
-    breed: "any_breed",
-    weigth: 1,
-    account_id: "any_account_id",
-});
-
-const mockLoadPetByChipNumber = (): LoadPetByChipNumberRepository => {
-    class LoadPetByChipNumberStub implements LoadPetByChipNumberRepository {
-        async loadByChipNumber(chipNumber: string): Promise<PetModel> {
-            return Promise.resolve(null);
-        }
-    }
-    return new LoadPetByChipNumberStub();
-};
-
-const mockAddPetsRepository = (): AddPetsRepository => {
-    class AddPetsRepositoryStub implements AddPetsRepository {
-        async add(data: AddPetParams): Promise<PetModel> {
-            return Promise.resolve(mockPetModel());
-        }
-    }
-    return new AddPetsRepositoryStub();
-};
+import {
+    mockAddPetsRepository,
+    mockLoadPetByChipNumberRepository,
+} from "@/data/test";
+import { mockAddPetParams, mockPetModel } from "@/domain/test";
 
 type SutTypes = {
     sut: DbAddPet;
@@ -56,7 +18,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
     const addPetsRepositoryStub = mockAddPetsRepository();
-    const loadPetByChipNumberStub = mockLoadPetByChipNumber();
+    const loadPetByChipNumberStub = mockLoadPetByChipNumberRepository();
     const sut = new DbAddPet(addPetsRepositoryStub, loadPetByChipNumberStub);
     return {
         addPetsRepositoryStub,

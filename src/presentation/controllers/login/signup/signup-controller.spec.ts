@@ -1,55 +1,13 @@
-import { AccountModel } from "@/domain/models/account";
-import {
-    AddAccount,
-    AddAccountParams,
-} from "@/domain/useCases/account/add-account";
-import {
-    Authentication,
-    AuthenticationParams,
-} from "@/domain/useCases/account/authenticaton";
+import { AddAccount, Authentication } from "@/domain/useCases/account";
 import { MissingParamError } from "@/presentation/errors/missing-param-error";
 import { badRequest, created } from "@/presentation/helpers/http/http-helper";
-import { HttpRequest } from "@/presentation/protocols/http";
-import { Validation } from "@/presentation/protocols/validation";
+import { Validation, HttpRequest } from "@/presentation/protocols";
+import {
+    mockAddAccount,
+    mockAuthentication,
+    mockValidation,
+} from "@/presentation/test";
 import { SignUpController } from "./signup-controller";
-
-const mockAuthentication = (): Authentication => {
-    class AuthenticationStub implements Authentication {
-        async authenticate(data: AuthenticationParams): Promise<string> {
-            return Promise.resolve("any_token");
-        }
-    }
-    return new AuthenticationStub();
-};
-
-const mockAddAccount = (): AddAccount => {
-    class AddAccountStub implements AddAccount {
-        async add(data: AddAccountParams): Promise<AccountModel> {
-            return Promise.resolve(mockAccountModel());
-        }
-    }
-    return new AddAccountStub();
-};
-
-const mockValidation = (): Validation => {
-    class ValidationStub implements Validation {
-        validate(input: any): Error {
-            return null;
-        }
-    }
-    return new ValidationStub();
-};
-const mockAccountModel = (): AccountModel => ({
-    id: "any_id",
-    name: "any_name",
-    last_name: "any_last_name",
-    cellphone: "any_cellphone",
-    zip_code: "any_zip_code",
-    email: "any_email@mail.com",
-    password: "any_password",
-    created_at: new Date(),
-    updated_at: new Date(),
-});
 
 const makeFakeRequest = (): HttpRequest => ({
     body: {
@@ -61,6 +19,7 @@ const makeFakeRequest = (): HttpRequest => ({
         password: "any_password",
     },
 });
+
 type SutTypes = {
     sut: SignUpController;
     addAccountStub: AddAccount;
@@ -142,8 +101,6 @@ describe("SignUp Controller", () => {
                 badRequest(new MissingParamError("any_field")),
             );
         });
-
-        test("", () => {});
     });
 
     describe("Authentication", () => {

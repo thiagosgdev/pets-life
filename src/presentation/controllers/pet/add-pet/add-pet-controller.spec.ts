@@ -1,22 +1,8 @@
-import { PetModel } from "@/domain/models/pet";
-import { AddPet, AddPetParams } from "@/domain/useCases/pet/add-pet";
+import { AddPet } from "@/domain/useCases/pet/add-pet";
 import { HttpRequest } from "@/presentation/protocols/http";
 import { AddPetController } from "./add-pet-controller";
 import Mockdate from "mockdate";
-
-const mockPetModel = (): PetModel => ({
-    id: "any_id",
-    name: "any_name",
-    birthdate: new Date(),
-    gender: 1,
-    chip_number: "any_chip_number",
-    chip_website: "any_chip_website",
-    breed: "any_breed",
-    weigth: 1,
-    account_id: "any_account_id",
-    created_at: new Date(),
-    updated_at: new Date(),
-});
+import { mockAddPetsRepository } from "@/data/test";
 
 const makeFakeRequest = (): HttpRequest => ({
     body: {
@@ -31,21 +17,12 @@ const makeFakeRequest = (): HttpRequest => ({
     },
 });
 
-const mockAddPet = (): AddPet => {
-    class AddPetStub implements AddPet {
-        add(data: AddPetParams): Promise<PetModel> {
-            return Promise.resolve(mockPetModel());
-        }
-    }
-    return new AddPetStub();
-};
-
 type SutTypes = {
     sut: AddPetController;
     addPetStub: AddPet;
 };
 const makeSut = (): SutTypes => {
-    const addPetStub = mockAddPet();
+    const addPetStub = mockAddPetsRepository();
     const sut = new AddPetController(addPetStub);
     return {
         sut,

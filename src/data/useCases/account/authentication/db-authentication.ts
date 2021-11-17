@@ -1,7 +1,8 @@
-import { Encrypter } from "@/data/protocols/cryptography/Encrypter";
-import { HashComparer } from "@/data/protocols/cryptography/Hash-Comparer";
-import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
-import { UpdateAccessTokenRepository } from "@/data/protocols/db/account/update-access-token-repository";
+import { Encrypter, HashComparer } from "@/data/protocols/cryptography";
+import {
+    LoadAccountByEmailRepository,
+    UpdateAccessTokenRepository,
+} from "@/data/protocols/db/account";
 import {
     Authentication,
     AuthenticationParams,
@@ -31,7 +32,6 @@ export class DbAuthentication implements Authentication {
                 return accessToken;
             }
         }
-
         return null;
     }
 }

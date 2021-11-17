@@ -1,8 +1,11 @@
-import { LoadPetByChipNumberRepository } from "@/data/protocols/db/pet/load-pet-by-chip-number-repository";
+import { LoadPetByChipNumberRepository } from "@/data/protocols/db/pet";
 import { Pet } from "@/domain/entities/Pet";
 import { PetModel } from "@/domain/models/pet";
-import { AddPet, AddPetParams } from "@/domain/useCases/pet/add-pet";
-import { LoadPetsByAccountId } from "@/domain/useCases/pet/load-pets-by-account-id";
+import {
+    AddPet,
+    AddPetParams,
+    LoadPetsByAccountId,
+} from "@/domain/useCases/pet";
 import { getRepository, Repository } from "typeorm";
 
 export class PetPostgresRepository

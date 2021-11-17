@@ -1,58 +1,16 @@
-import { Encrypter } from "@/data/protocols/cryptography/Encrypter";
-import { HashComparer } from "@/data/protocols/cryptography/Hash-Comparer";
-import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
-import { UpdateAccessTokenRepository } from "@/data/protocols/db/account/update-access-token-repository";
-import { AccountModel } from "@/domain/models/account";
+import { Encrypter, HashComparer } from "@/data/protocols/cryptography";
+import {
+    LoadAccountByEmailRepository,
+    UpdateAccessTokenRepository,
+} from "@/data/protocols/db/account";
+import {
+    mockEncrypter,
+    mockHashComparer,
+    mockLoadAccountByEmailRepository,
+    mockUpdateAccessToken,
+} from "@/data/test";
 import { AuthenticationParams } from "@/domain/useCases/account/authenticaton";
 import { DbAuthentication } from "./db-authentication";
-
-const mockUpdateAccessToken = (): UpdateAccessTokenRepository => {
-    class UpdateAccessTokenStub implements UpdateAccessTokenRepository {
-        async updateToken(token: string, id: string): Promise<void> {}
-    }
-    return new UpdateAccessTokenStub();
-};
-
-const mockEncrypter = (): Encrypter => {
-    class EncrypterStub implements Encrypter {
-        async encrypt(data: string): Promise<string> {
-            return Promise.resolve("any_token");
-        }
-    }
-    return new EncrypterStub();
-};
-
-const mockHashComparer = (): HashComparer => {
-    class HashComparerStub implements HashComparer {
-        async compare(value: string, hash: string): Promise<boolean> {
-            return Promise.resolve(true);
-        }
-    }
-    return new HashComparerStub();
-};
-
-const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
-    class LoadAccountByEmailRepositoryStub
-        implements LoadAccountByEmailRepository
-    {
-        async loadByEmail(email: string): Promise<AccountModel> {
-            return Promise.resolve(mockAccountModel());
-        }
-    }
-    return new LoadAccountByEmailRepositoryStub();
-};
-
-const mockAccountModel = (): AccountModel => ({
-    id: "any_id",
-    name: "any_name",
-    last_name: "any_last_name",
-    cellphone: "any_cellphone",
-    zip_code: "any_zip_code",
-    email: "any_email@mail.com",
-    password: "any_password",
-    created_at: new Date(),
-    updated_at: new Date(),
-});
 
 type SutTypes = {
     sut: DbAuthentication;
@@ -66,7 +24,7 @@ const makeSut = (): SutTypes => {
     const hashComparerStub = mockHashComparer();
     const encrypterStub = mockEncrypter();
     const updateAccessTokenStub = mockUpdateAccessToken();
-    const loadAccountByEmaiLStub = mockLoadAccountByEmail();
+    const loadAccountByEmaiLStub = mockLoadAccountByEmailRepository();
     const sut = new DbAuthentication(
         loadAccountByEmaiLStub,
         hashComparerStub,

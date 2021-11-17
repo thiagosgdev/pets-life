@@ -1,6 +1,8 @@
-import { AddAccountRepository } from "@/data/protocols/db/account/add-account-repository";
-import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-by-emailrepository";
-import { UpdateAccessTokenRepository } from "@/data/protocols/db/account/update-access-token-repository";
+import {
+    AddAccountRepository,
+    LoadAccountByEmailRepository,
+    UpdateAccessTokenRepository,
+} from "@/data/protocols/db/account";
 import { Account } from "@/domain/entities/Account";
 import { AccountModel } from "@/domain/models/account";
 import { AddAccountParams } from "@/domain/useCases/account/add-account";
