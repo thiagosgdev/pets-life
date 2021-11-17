@@ -24,14 +24,20 @@ export class SignUpController implements Controller {
                     email,
                     password,
                 });
+                if (accessToken) {
+                    return {
+                        status: 200,
+                        body: accessToken,
+                    };
+                }
                 return {
-                    status: 200,
-                    body: accessToken,
+                    status: 401,
+                    body: "Authentication error",
                 };
             }
             return {
-                status: 403,
-                body: "E-mail já utilizado",
+                status: 200,
+                body: "Please try to recover your password",
             };
         } catch (error) {
             return {
