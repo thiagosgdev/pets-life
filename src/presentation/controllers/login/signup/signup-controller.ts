@@ -1,6 +1,12 @@
 import { AddAccount } from "@/domain/useCases/account/add-account";
 import { Authentication } from "@/domain/useCases/account/authenticaton";
-import { badRequest } from "@/presentation/helpers/http/http-helper";
+import {
+    badRequest,
+    created,
+    forbidden,
+    ok,
+    serverError,
+} from "@/presentation/helpers/http/http-helper";
 import { Controller } from "@/presentation/protocols/controller";
 import { HttpRequest, HttpResponse } from "@/presentation/protocols/http";
 import { Validation } from "@/presentation/protocols/validation";
@@ -25,25 +31,16 @@ export class SignUpController implements Controller {
                     password,
                 });
                 if (accessToken) {
-                    return {
-                        status: 200,
-                        body: accessToken,
-                    };
+                    return created(accessToken);
                 }
-                return {
-                    status: 401,
-                    body: "Authentication error",
-                };
+                return forbidden({
+                    name: "Authentication error",
+                    message: "E-mail and/or password is incorrect",
+                });
             }
-            return {
-                status: 200,
-                body: "Please try to recover your password",
-            };
+            return ok("Please try to recover your password");
         } catch (error) {
-            return {
-                status: 500,
-                body: error,
-            };
+            return serverError(error);
         }
     }
 }

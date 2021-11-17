@@ -8,7 +8,7 @@ import {
     AuthenticationParams,
 } from "@/domain/useCases/account/authenticaton";
 import { MissingParamError } from "@/presentation/errors/missing-param-error";
-import { badRequest } from "@/presentation/helpers/http/http-helper";
+import { badRequest, created } from "@/presentation/helpers/http/http-helper";
 import { HttpRequest } from "@/presentation/protocols/http";
 import { Validation } from "@/presentation/protocols/validation";
 import { SignUpController } from "./signup-controller";
@@ -95,19 +95,19 @@ describe("SignUp Controller", () => {
             expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
         });
 
-        test("Should return status 200 on AddAccount success", async () => {
+        test("Should return status 201 on AddAccount success", async () => {
             const { sut } = makeSut();
             const response = await sut.handle(makeFakeRequest());
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(201);
         });
 
-        test("Should return status 403 if AddAccount returns null", async () => {
+        test("Should return status 200 if AddAccount returns null", async () => {
             const { sut, addAccountStub } = makeSut();
             jest.spyOn(addAccountStub, "add").mockReturnValueOnce(
                 Promise.resolve(null),
             );
             const response = await sut.handle(makeFakeRequest());
-            expect(response.status).toBe(403);
+            expect(response.status).toBe(200);
         });
 
         test("Should return 500 if AddAccount throws", async () => {
@@ -163,7 +163,7 @@ describe("SignUp Controller", () => {
         test("Should return an access token on authenticate success", async () => {
             const { sut } = makeSut();
             const response = await sut.handle(makeFakeRequest());
-            expect(response).toEqual({ body: "any_token", status: 200 });
+            expect(response).toEqual(created("any_token"));
         });
     });
 });
