@@ -1,15 +1,3 @@
-import { connection } from "@/infra/db/typeorm/helpers/typeorm-helper";
-//import createConnection from "@/infra/db/typeorm/helpers/typeorm-helper";
-import "dotenv/config";
-import express from "express";
-import "reflect-metadata";
-
-const app = express();
-
-//createConnection();
-
-connection.create();
-
-app.use(express.json());
+import app from "@/main/config/app";
 
 app.listen(3001, () => console.log("Server is runnig"));
