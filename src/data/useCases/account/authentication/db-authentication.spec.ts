@@ -6,11 +6,25 @@ import {
 import {
     mockEncrypter,
     mockHashComparer,
-    mockLoadAccountByEmailRepository,
     mockUpdateAccessToken,
 } from "@/data/test";
+import { throwError } from "@/data/test/test-helper";
+import { AccountModel } from "@/domain/models/account";
+import { mockAccountModel } from "@/domain/test";
 import { AuthenticationParams } from "@/domain/useCases/account/authenticaton";
 import { DbAuthentication } from "./db-authentication";
+
+export const mockLoadAccountByEmailRepository =
+    (): LoadAccountByEmailRepository => {
+        class LoadAccountByEmailRepositoryStub
+            implements LoadAccountByEmailRepository
+        {
+            async loadByEmail(email: string): Promise<AccountModel> {
+                return Promise.resolve(mockAccountModel());
+            }
+        }
+        return new LoadAccountByEmailRepositoryStub();
+    };
 
 type SutTypes = {
     sut: DbAuthentication;
@@ -96,7 +110,7 @@ describe("Authentication", () => {
         const { sut, encrypterStub } = makeSut();
         const encryptSpy = jest.spyOn(encrypterStub, "encrypt");
         await sut.authenticate(mockAuthenticationParams());
-        expect(encryptSpy).toHaveBeenLastCalledWith("any_id");
+        expect(encryptSpy).toHaveBeenCalledWith("any_id");
     });
 
     test("Shoudl return a token on Encrypter success", async () => {
