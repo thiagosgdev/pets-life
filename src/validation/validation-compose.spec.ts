@@ -1,0 +1,40 @@
+import { MissingParamError } from "@/presentation/errors/missing-param-error";
+import { Validation } from "@/presentation/protocols";
+import { ValidationComposite } from "./validation-composite";
+
+const mockValidation = (): Validation => {
+    class ValidationStub implements Validation {
+        validate(input: any): Error {
+            return null;
+        }
+    }
+    return new ValidationStub();
+};
+
+type SutTypes = {
+    sut: ValidationComposite;
+    validationStubs: Validation[];
+};
+
+const makeSut = (): SutTypes => {
+    const validationStubs = [mockValidation(), mockValidation()];
+    const sut = new ValidationComposite(validationStubs);
+    return {
+        sut,
+        validationStubs,
+    };
+};
+
+describe("Validation Composite", () => {
+    test("Should return an error if any validation fails", async () => {
+        const { sut, validationStubs } = makeSut();
+        jest.spyOn(validationStubs[0], "validate").mockReturnValueOnce(
+            new Error(),
+        );
+        jest.spyOn(validationStubs[1], "validate").mockReturnValueOnce(
+            new MissingParamError("field"),
+        );
+        const error = sut.validate({ field: "any_value" });
+        expect(error).toEqual(new Error());
+    });
+});
