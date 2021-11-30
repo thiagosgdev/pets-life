@@ -1,10 +1,9 @@
 import { PetModel } from "@/domain/models/pet";
-import { Gender } from "@/domain/types/gender-enum";
 
 export type AddPetParams = {
     name: string;
     birthdate: Date;
-    gender: Gender;
+    gender: "male" | "female";
     chip_number?: string;
     chip_website?: string;
     breed: string;

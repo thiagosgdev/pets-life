@@ -5,10 +5,8 @@ import {
     JoinColumn,
     ManyToOne,
     PrimaryColumn,
-    TableForeignKey,
     UpdateDateColumn,
 } from "typeorm";
-import { Gender } from "../types/gender-enum";
 import { Account } from "./Account";
 import { v4 as uuidV4 } from "uuid";
 
@@ -30,7 +28,7 @@ export class Pet {
     chip_website: string;
 
     @Column()
-    gender: Gender;
+    gender: "male" | "female";
 
     @Column()
     breed: string;
