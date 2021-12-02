@@ -1,13 +1,12 @@
-import { makeDbSignUp } from "@/main/factories/usecases/account/db-add-account-factory";
+import { makeDbAddAccount } from "@/main/factories/usecases/account/db-add-account-factory";
 import { makeDbAuthentication } from "@/main/factories/usecases/authentication/db-authentication-factory";
 import { SignUpController } from "@/presentation/controllers/login/signup/signup-controller";
 import { Controller } from "@/presentation/protocols";
-import { RequiredFieldValidation } from "@/validation/require-field-validation";
-import { makeSignUpValidation } from "./validation-compositer-factoru";
+import { makeSignUpValidation } from "./validation-compositer-factory";
 
-export const makeSignUpController = (): Controller => {
+export const makeAddAccountController = (): Controller => {
     const controller = new SignUpController(
-        makeDbSignUp(),
+        makeDbAddAccount(),
         makeSignUpValidation(),
         makeDbAuthentication(),
     );
