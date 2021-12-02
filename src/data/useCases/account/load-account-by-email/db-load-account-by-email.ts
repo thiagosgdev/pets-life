@@ -8,7 +8,7 @@ export class DbLoadAccountByEmail implements LoadAccountByEmail {
     ) {}
 
     async load(email: string): Promise<AccountModel> {
-        await this.loadAccountByEmailRepository.load(email);
-        return null;
+        const account = await this.loadAccountByEmailRepository.load(email);
+        return account;
     }
 }
