@@ -22,7 +22,7 @@ export const mockLoadAccountByEmailRepository =
             implements LoadAccountByEmailRepository
         {
             async load(email: string): Promise<AccountModel> {
-                return Promise.resolve(null);
+                return Promise.resolve(mockAccountModel());
             }
         }
         return new LoadAccountByEmailRepositoryStub();

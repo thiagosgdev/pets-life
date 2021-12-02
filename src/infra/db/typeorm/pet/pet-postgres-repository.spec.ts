@@ -27,7 +27,6 @@ describe("Pet Postgres Repository", () => {
         await connection.clear();
     });
     afterAll(async () => {
-        await connection.clear();
         await connection.close();
     });
 

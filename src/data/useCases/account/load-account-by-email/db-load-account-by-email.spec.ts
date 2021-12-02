@@ -1,6 +1,5 @@
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account";
 import { mockLoadAccountByEmailRepository } from "@/data/test";
-import { load } from "dotenv";
 import { DbLoadAccountByEmail } from "./db-load-account-by-email";
 
 type SutTypes = {
@@ -23,5 +22,11 @@ describe("Db Load Account By Email", () => {
         const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, "load");
         await sut.load("any_email@mail.com");
         expect(loadSpy).toHaveBeenCalledWith("any_email@mail.com");
+    });
+
+    test("Should return the account on LoadAccountByEmailRepository success", async () => {
+        const { sut } = makeSut();
+        const account = await sut.load("any_email@mail.com");
+        expect(account).toHaveProperty("id");
     });
 });
