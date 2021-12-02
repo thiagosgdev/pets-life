@@ -30,6 +30,9 @@ export class AddPetController implements Controller {
             account_id,
         });
 
-        return null;
+        return {
+            status: 200,
+            body: pet,
+        };
     }
 }
