@@ -21,7 +21,7 @@ export const mockLoadAccountByEmailRepository =
         class LoadAccountByEmailRepositoryStub
             implements LoadAccountByEmailRepository
         {
-            async loadByEmail(email: string): Promise<AccountModel> {
+            async load(email: string): Promise<AccountModel> {
                 return Promise.resolve(null);
             }
         }

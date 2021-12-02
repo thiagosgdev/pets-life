@@ -17,7 +17,7 @@ export class DbAddAccount implements AddAccount {
     ) {}
 
     async add(accountData: AddAccountParams): Promise<AccountModel> {
-        const account = await this.loadAccountByEmaiLRepository.loadByEmail(
+        const account = await this.loadAccountByEmaiLRepository.load(
             accountData.email,
         );
         if (!account) {

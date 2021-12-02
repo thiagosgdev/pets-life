@@ -23,6 +23,7 @@ describe("Account Postgres Repository", () => {
         await connection.clear();
     });
     afterAll(async () => {
+        await connection.clear();
         await connection.close();
     });
 
@@ -32,16 +33,16 @@ describe("Account Postgres Repository", () => {
         expect(account).toHaveProperty("id");
     });
 
-    test("Should an account on loadByEmail success", async () => {
+    test("Should an account on load success", async () => {
         const { sut } = makeSut();
         await sut.add(mockAddAccountParams());
-        const account = await sut.loadByEmail("any_email@mail.com");
+        const account = await sut.load("any_email@mail.com");
         expect(account).toBeTruthy();
     });
 
-    test("Should return null if loadByEmail doesn't find an account", async () => {
+    test("Should return null if load doesn't find an account", async () => {
         const { sut } = makeSut();
-        const account = await sut.loadByEmail("any_email@mail.com");
+        const account = await sut.load("any_email@mail.com");
         expect(account).toBeFalsy();
     });
 
