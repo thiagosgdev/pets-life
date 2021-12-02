@@ -53,4 +53,10 @@ describe("Add Pet Controller", () => {
             account_id: "any_account_id",
         });
     });
+
+    test("Should return 200 on AddPet success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
+    });
 });
