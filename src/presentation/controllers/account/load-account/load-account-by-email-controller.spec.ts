@@ -46,4 +46,13 @@ describe("Load Account By Email Controller", () => {
         expect(response.status).toBe(200);
         expect(response.body).toBe("Check the e-mail informed");
     });
+
+    test("Should return 200 on LoadAccountByEmail fail", async () => {
+        const { sut, loadAccountByEmailStub } = makeSut();
+        jest.spyOn(loadAccountByEmailStub, "load").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(500);
+    });
 });
