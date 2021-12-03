@@ -24,10 +24,16 @@ const makeSut = (): SutTypes => {
 };
 
 describe("Load Account By Email Controller", () => {
-    test("Should return 200 on LoadAccountByEmail success", async () => {
+    test("Should call LoadAccountByEmail with the correct value", async () => {
         const { sut, loadAccountByEmailStub } = makeSut();
         const loadSpy = jest.spyOn(loadAccountByEmailStub, "load");
         await sut.handle(makeFakeRequest());
         expect(loadSpy).toHaveBeenCalledWith("any_email@mail.com");
+    });
+
+    test("Should return 200 on LoadAccountByEmail success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
     });
 });
