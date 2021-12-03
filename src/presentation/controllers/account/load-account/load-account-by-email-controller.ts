@@ -16,6 +16,9 @@ export class LoadAccountByEmaiLController implements Controller {
                 body: account,
             };
         }
-        return null;
+        return {
+            status: 200,
+            body: "Check the e-mail informed",
+        };
     }
 }
