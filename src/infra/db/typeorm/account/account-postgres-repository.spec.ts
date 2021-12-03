@@ -17,6 +17,7 @@ describe("Account Postgres Repository", () => {
     beforeAll(async () => {
         let migrations = await connection.create();
         await migrations.runMigrations();
+        await connection.clear();
     });
 
     beforeEach(async () => {
