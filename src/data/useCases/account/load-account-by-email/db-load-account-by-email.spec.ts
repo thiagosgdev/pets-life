@@ -29,4 +29,14 @@ describe("Db Load Account By Email", () => {
         const account = await sut.load("any_email@mail.com");
         expect(account).toHaveProperty("id");
     });
+
+    test("Should return return null on LoadAccountByEmailRepository fail", async () => {
+        const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+        jest.spyOn(
+            loadAccountByEmailRepositoryStub,
+            "load",
+        ).mockReturnValueOnce(Promise.resolve(null));
+        const account = await sut.load("any_email@mail.com");
+        expect(account).toBe(null);
+    });
 });
