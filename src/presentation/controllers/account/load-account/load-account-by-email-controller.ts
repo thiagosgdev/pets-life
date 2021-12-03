@@ -8,17 +8,24 @@ import {
 export class LoadAccountByEmaiLController implements Controller {
     constructor(private readonly loadAccountByEmail: LoadAccountByEmail) {}
     async handle(request: HttpRequest): Promise<HttpResponse> {
-        const { email } = request.body;
-        const account = await this.loadAccountByEmail.load(email);
-        if (account) {
+        try {
+            const { email } = request.body;
+            const account = await this.loadAccountByEmail.load(email);
+            if (account) {
+                return {
+                    status: 200,
+                    body: account,
+                };
+            }
             return {
                 status: 200,
-                body: account,
+                body: "Check the e-mail informed",
+            };
+        } catch (error) {
+            return {
+                status: 500,
+                body: error,
             };
         }
-        return {
-            status: 200,
-            body: "Check the e-mail informed",
-        };
     }
 }
