@@ -39,4 +39,14 @@ describe("Db Load Account By Email", () => {
         const account = await sut.load("any_email@mail.com");
         expect(account).toBe(null);
     });
+
+    test("Should return the account on LoadAccountByEmailRepository success", async () => {
+        const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+        jest.spyOn(
+            loadAccountByEmailRepositoryStub,
+            "load",
+        ).mockReturnValueOnce(Promise.reject(new Error()));
+        const promise = sut.load("any_email@mail.com");
+        await expect(promise).rejects.toThrow();
+    });
 });
