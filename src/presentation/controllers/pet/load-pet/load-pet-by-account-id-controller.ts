@@ -11,6 +11,11 @@ export class LoadPetsByAccountIdController implements Controller {
     async handle(request: HttpRequest): Promise<HttpResponse> {
         const { account_id } = request.body;
         const pets = await this.loadPetsByAccountId.loadByAccountId(account_id);
-        return null;
+        if (pets) {
+            return {
+                status: 200,
+                body: pets,
+            };
+        }
     }
 }
