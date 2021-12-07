@@ -1,5 +1,6 @@
 import { AddPetParams } from "@/domain/useCases/pet/add-pet";
 import { PetModel } from "@/domain/models/pet";
+import { LoadPetsByAccountId } from "../useCases/pet";
 
 export const mockAddPetParams = (): AddPetParams => ({
     name: "any_name",
@@ -54,3 +55,12 @@ export const mockPetModels = (): PetModel[] => [
         updated_at: new Date(),
     },
 ];
+
+export const mockLoadPetsByAccountId = (): LoadPetsByAccountId => {
+    class LoadPetsByAccountIdStub implements LoadPetsByAccountId {
+        loadByAccountId(account_id: string): Promise<PetModel[]> {
+            return Promise.resolve(mockPetModels());
+        }
+    }
+    return new LoadPetsByAccountIdStub();
+};
