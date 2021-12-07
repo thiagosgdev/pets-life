@@ -1,7 +1,13 @@
 import { mockAddPetParams, mockLoadPetsByAccountId } from "@/domain/test";
 import { LoadPetsByAccountId } from "@/domain/useCases/pet";
-import { load } from "dotenv";
+import { HttpRequest } from "@/presentation/protocols";
 import { LoadPetsByAccountIdController } from "./load-pet-by-account-id-controller";
+
+const makeFakeRequest = (): HttpRequest => ({
+    body: {
+        account_id: "any_account_id",
+    },
+});
 
 type SutTypes = {
     sut: LoadPetsByAccountIdController;
@@ -18,10 +24,16 @@ const makeSut = (): SutTypes => {
 };
 
 describe("Load Pet By Account Id Controller", () => {
-    test("Should call LoadPetByAccount with the correct values", async () => {
+    test("Should call LoadPetByAccountId with the correct values", async () => {
         const { sut, loadPetsByAccountIdStub } = makeSut();
         const loadSpy = jest.spyOn(loadPetsByAccountIdStub, "loadByAccountId");
-        await sut.handle({ body: { account_id: "any_account_id" } });
+        await sut.handle(makeFakeRequest());
         expect(loadSpy).toHaveBeenCalledWith("any_account_id");
+    });
+
+    test("Should return the pets on LoadPetByAccountId success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
     });
 });
