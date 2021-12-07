@@ -17,5 +17,11 @@ export class LoadPetsByAccountIdController implements Controller {
                 body: pets,
             };
         }
+        return {
+            status: 200,
+            body: {
+                message: "Check the id account",
+            },
+        };
     }
 }
