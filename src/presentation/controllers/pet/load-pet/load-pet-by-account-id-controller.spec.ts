@@ -24,20 +24,20 @@ const makeSut = (): SutTypes => {
 };
 
 describe("Load Pet By Account Id Controller", () => {
-    test("Should call LoadPetByAccountId with the correct values", async () => {
+    test("Should call LoadPetsByAccountId with the correct values", async () => {
         const { sut, loadPetsByAccountIdStub } = makeSut();
         const loadSpy = jest.spyOn(loadPetsByAccountIdStub, "loadByAccountId");
         await sut.handle(makeFakeRequest());
         expect(loadSpy).toHaveBeenCalledWith("any_account_id");
     });
 
-    test("Should return 200 on LoadPetByAccountId success", async () => {
+    test("Should return 200 on LoadPetsByAccountId success", async () => {
         const { sut } = makeSut();
         const response = await sut.handle(makeFakeRequest());
         expect(response.status).toBe(200);
     });
 
-    test("Should return 200 on LoadPetByAccountId fail", async () => {
+    test("Should return 200 on LoadPetsByAccountId fail", async () => {
         const { sut, loadPetsByAccountIdStub } = makeSut();
         jest.spyOn(
             loadPetsByAccountIdStub,
@@ -46,5 +46,15 @@ describe("Load Pet By Account Id Controller", () => {
         const response = await sut.handle(makeFakeRequest());
         expect(response.status).toBe(200);
         expect(response.body.message).toBeTruthy();
+    });
+
+    test("Should return 500 if LoadPetsByAccountId throws", async () => {
+        const { sut, loadPetsByAccountIdStub } = makeSut();
+        jest.spyOn(
+            loadPetsByAccountIdStub,
+            "loadByAccountId",
+        ).mockReturnValueOnce(Promise.reject(new Error()));
+        const promise = await sut.handle(makeFakeRequest());
+        expect(promise.status).toBe(500);
     });
 });
