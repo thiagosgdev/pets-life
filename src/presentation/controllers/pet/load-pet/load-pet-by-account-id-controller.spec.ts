@@ -31,9 +31,20 @@ describe("Load Pet By Account Id Controller", () => {
         expect(loadSpy).toHaveBeenCalledWith("any_account_id");
     });
 
-    test("Should return the pets on LoadPetByAccountId success", async () => {
+    test("Should return 200 on LoadPetByAccountId success", async () => {
         const { sut } = makeSut();
         const response = await sut.handle(makeFakeRequest());
         expect(response.status).toBe(200);
+    });
+
+    test("Should return 200 on LoadPetByAccountId fail", async () => {
+        const { sut, loadPetsByAccountIdStub } = makeSut();
+        jest.spyOn(
+            loadPetsByAccountIdStub,
+            "loadByAccountId",
+        ).mockReturnValueOnce(Promise.resolve(null));
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBeTruthy();
     });
 });
