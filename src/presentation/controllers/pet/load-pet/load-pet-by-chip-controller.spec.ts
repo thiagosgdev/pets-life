@@ -36,4 +36,14 @@ describe("Load Pet By Chip Controller", () => {
         const response = await sut.handle(makeFakeRequest());
         expect(response.status).toBe(200);
     });
+
+    test("Should return 200 on LoadPetByChip fail", async () => {
+        const { sut, loadPetByChipStub } = makeSut();
+        jest.spyOn(loadPetByChipStub, "load").mockReturnValueOnce(
+            Promise.resolve(null),
+        );
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBeTruthy();
+    });
 });
