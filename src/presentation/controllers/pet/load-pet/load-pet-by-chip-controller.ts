@@ -17,5 +17,11 @@ export class LoadPetByChipController implements Controller {
                 body: pet,
             };
         }
+        return {
+            status: 200,
+            body: {
+                message: "Verify the chip number informed",
+            },
+        };
     }
 }
