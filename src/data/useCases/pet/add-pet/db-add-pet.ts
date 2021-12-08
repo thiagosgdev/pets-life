@@ -1,18 +1,18 @@
 import {
     AddPetsRepository,
-    LoadPetByChipNumberRepository,
+    LoadPetByChipRepository,
 } from "@/data/protocols/db/pet";
-import {} from "@/data/protocols/db/pet/load-pet-by-chip-number-repository";
+import {} from "@/data/protocols/db/pet/load-pet-by-chip-repository";
 import { PetModel } from "@/domain/models/pet";
 import { AddPet, AddPetParams } from "@/domain/useCases/pet/add-pet";
 
 export class DbAddPet implements AddPet {
     constructor(
         private readonly addPetsRepository: AddPetsRepository,
-        private readonly loadPetByChipNumberRepository: LoadPetByChipNumberRepository,
+        private readonly loadPetByChipRepository: LoadPetByChipRepository,
     ) {}
     async add(petInfo: AddPetParams): Promise<PetModel> {
-        const pet = await this.loadPetByChipNumberRepository.loadByChipNumber(
+        const pet = await this.loadPetByChipRepository.load(
             petInfo.chip_number,
         );
         if (!pet) {

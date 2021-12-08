@@ -4,18 +4,17 @@ import { AddPetParams } from "@/domain/useCases/pet/add-pet";
 import {
     AddPetsRepository,
     LoadPetsByAccountIdRepository,
-    LoadPetByChipNumberRepository,
+    LoadPetByChipRepository,
 } from "../protocols/db/pet";
 
-export const mockLoadPetByChipNumberRepository =
-    (): LoadPetByChipNumberRepository => {
-        class LoadPetByChipNumberStub implements LoadPetByChipNumberRepository {
-            async loadByChipNumber(chipNumber: string): Promise<PetModel> {
-                return Promise.resolve(null);
-            }
+export const mockLoadPetByChipRepository = (): LoadPetByChipRepository => {
+    class LoadPetByChipRepositoryStub implements LoadPetByChipRepository {
+        async load(chip_number: string): Promise<PetModel> {
+            return Promise.resolve(mockPetModel());
         }
-        return new LoadPetByChipNumberStub();
-    };
+    }
+    return new LoadPetByChipRepositoryStub();
+};
 
 export const mockAddPetsRepository = (): AddPetsRepository => {
     class AddPetsRepositoryStub implements AddPetsRepository {

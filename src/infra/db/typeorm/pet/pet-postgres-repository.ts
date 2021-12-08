@@ -1,4 +1,4 @@
-import { LoadPetByChipNumberRepository } from "@/data/protocols/db/pet";
+import { LoadPetByChipRepository } from "@/data/protocols/db/pet";
 import { Pet } from "@/domain/entities/Pet";
 import { PetModel } from "@/domain/models/pet";
 import {
@@ -9,7 +9,7 @@ import {
 import { getRepository, Repository } from "typeorm";
 
 export class PetPostgresRepository
-    implements AddPet, LoadPetsByAccountId, LoadPetByChipNumberRepository
+    implements AddPet, LoadPetsByAccountId, LoadPetByChipRepository
 {
     private repository: Repository<Pet>;
 
@@ -30,7 +30,7 @@ export class PetPostgresRepository
         return null;
     }
 
-    async loadByChipNumber(chip_number: string): Promise<PetModel> {
+    async load(chip_number: string): Promise<PetModel> {
         const pet = await this.repository.findOne({ chip_number });
         if (pet) {
             return pet;

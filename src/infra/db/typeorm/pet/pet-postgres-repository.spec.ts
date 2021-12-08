@@ -69,14 +69,14 @@ describe("Pet Postgres Repository", () => {
         await sut.add(
             Object.assign(mockAddPetParams(), { account_id: account.id }),
         );
-        const pet = await sut.loadByChipNumber("any_chip_number");
+        const pet = await sut.load("any_chip_number");
         expect(pet).toHaveProperty("id");
     });
 
     test("Should return null if no Pet is found on loadByChipNumber", async () => {
         const { sut, addAccountPostgresRepository } = makeSut();
         await addAccountPostgresRepository.add(mockAddAccountParams());
-        const pet = await sut.loadByChipNumber("any_chip_number");
+        const pet = await sut.load("any_chip_number");
         expect(pet).toBeNull();
     });
 });
