@@ -38,4 +38,13 @@ describe("Db Load Pet By Chip", () => {
         const pet = await sut.load("any_chip_number");
         expect(pet).toBe(null);
     });
+
+    test("Should throw if LoadPetByChipRepository throws", async () => {
+        const { sut, loadPetByChipRepositoryStub } = makeSut();
+        jest.spyOn(loadPetByChipRepositoryStub, "load").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.load("any_chip_number");
+        await expect(promise).rejects.toThrow();
+    });
 });
