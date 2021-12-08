@@ -30,4 +30,10 @@ describe("Load Pet By Chip Controller", () => {
         await sut.handle(makeFakeRequest());
         expect(loadSpy).toHaveBeenCalledWith("any_chip_number");
     });
+
+    test("Should return 200 on LoadPetByChip success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
+    });
 });
