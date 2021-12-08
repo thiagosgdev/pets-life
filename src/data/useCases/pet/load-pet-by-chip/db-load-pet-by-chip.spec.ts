@@ -29,4 +29,13 @@ describe("Db Load Pet By Chip", () => {
         const pet = await sut.load("any_chip_number");
         expect(pet).toHaveProperty("id");
     });
+
+    test("Should return null on LoadPetByChipRepository fail", async () => {
+        const { sut, loadPetByChipRepositoryStub } = makeSut();
+        jest.spyOn(loadPetByChipRepositoryStub, "load").mockReturnValueOnce(
+            Promise.resolve(null),
+        );
+        const pet = await sut.load("any_chip_number");
+        expect(pet).toBe(null);
+    });
 });
