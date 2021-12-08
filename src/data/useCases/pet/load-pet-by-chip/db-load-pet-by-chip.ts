@@ -8,6 +8,9 @@ export class DbLoadPetByChip implements LoadPetByChipRepository {
 
     async load(chip_number: string): Promise<PetModel> {
         const pet = await this.loadPetByChipRepository.load(chip_number);
-        return pet;
+        if (pet) {
+            return pet;
+        }
+        return null;
     }
 }
