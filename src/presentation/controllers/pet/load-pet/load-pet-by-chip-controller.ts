@@ -10,7 +10,12 @@ export class LoadPetByChipController implements Controller {
 
     async handle(request: HttpRequest): Promise<HttpResponse> {
         const { chip_number } = request.body;
-        await this.loadPetByChip.load(chip_number);
-        return null;
+        const pet = await this.loadPetByChip.load(chip_number);
+        if (pet) {
+            return {
+                status: 200,
+                body: pet,
+            };
+        }
     }
 }
