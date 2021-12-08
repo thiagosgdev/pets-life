@@ -1,6 +1,7 @@
 import { AddPetParams } from "@/domain/useCases/pet/add-pet";
 import { PetModel } from "@/domain/models/pet";
 import { LoadPetsByAccountId } from "../useCases/pet";
+import { LoadPetByChip } from "../useCases/pet/load-pet-by-chip";
 
 export const mockAddPetParams = (): AddPetParams => ({
     name: "any_name",
@@ -63,4 +64,13 @@ export const mockLoadPetsByAccountId = (): LoadPetsByAccountId => {
         }
     }
     return new LoadPetsByAccountIdStub();
+};
+
+export const mockLoadPetByChip = (): LoadPetByChip => {
+    class LoadPetByChipStub implements LoadPetByChip {
+        async load(chip_number): Promise<PetModel> {
+            return Promise.resolve(mockPetModel());
+        }
+    }
+    return new LoadPetByChipStub();
 };
