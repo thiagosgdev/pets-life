@@ -23,4 +23,10 @@ describe("Db Load Pet By Chip", () => {
         await sut.load("any_chip_number");
         expect(loadSpy).toHaveBeenCalledWith("any_chip_number");
     });
+
+    test("Should return the pet on LoadPetByChipRepository success", async () => {
+        const { sut } = makeSut();
+        const pet = await sut.load("any_chip_number");
+        expect(pet).toHaveProperty("id");
+    });
 });
