@@ -9,19 +9,26 @@ export class LoadPetByChipController implements Controller {
     constructor(private readonly loadPetByChip: LoadPetByChip) {}
 
     async handle(request: HttpRequest): Promise<HttpResponse> {
-        const { chip_number } = request.body;
-        const pet = await this.loadPetByChip.load(chip_number);
-        if (pet) {
+        try {
+            const { chip_number } = request.body;
+            const pet = await this.loadPetByChip.load(chip_number);
+            if (pet) {
+                return {
+                    status: 200,
+                    body: pet,
+                };
+            }
             return {
                 status: 200,
-                body: pet,
+                body: {
+                    message: "Verify the chip number informed",
+                },
+            };
+        } catch (error) {
+            return {
+                status: 500,
+                body: error,
             };
         }
-        return {
-            status: 200,
-            body: {
-                message: "Verify the chip number informed",
-            },
-        };
     }
 }
