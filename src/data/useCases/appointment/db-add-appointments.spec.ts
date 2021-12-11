@@ -59,4 +59,10 @@ describe("Db Add Appointment", () => {
         await sut.add(mockAddAppointmentParams());
         expect(addSpy).toHaveBeenCalledWith(mockAddAppointmentParams());
     });
+
+    test("Should return the appointment on AddAppointmentRepository with the correct values", async () => {
+        const { sut } = makeSut();
+        const appointment = await sut.add(mockAddAppointmentParams());
+        expect(appointment).toHaveProperty("id");
+    });
 });
