@@ -60,18 +60,27 @@ describe("Db Add Appointment", () => {
         expect(addSpy).toHaveBeenCalledWith(mockAddAppointmentParams());
     });
 
-    test("Should return the appointment on AddAppointmentRepository with the correct values", async () => {
+    test("Should return the appointment on AddAppointmentRepository success", async () => {
         const { sut } = makeSut();
         const appointment = await sut.add(mockAddAppointmentParams());
         expect(appointment).toHaveProperty("id");
     });
 
-    test("Should return the appointment on AddAppointmentRepository with the correct values", async () => {
+    test("Should return null on AddAppointmentRepository fail", async () => {
         const { sut, addAppointmentRepositoryStub } = makeSut();
         jest.spyOn(addAppointmentRepositoryStub, "add").mockReturnValueOnce(
             Promise.resolve(null),
         );
         const appointment = await sut.add(mockAddAppointmentParams());
         expect(appointment).toBeNull();
+    });
+
+    test("Should throw if AddAppointmentRepository throws", async () => {
+        const { sut, addAppointmentRepositoryStub } = makeSut();
+        jest.spyOn(addAppointmentRepositoryStub, "add").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const appointment = sut.add(mockAddAppointmentParams());
+        await expect(appointment).rejects.toThrow();
     });
 });
