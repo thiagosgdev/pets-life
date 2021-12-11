@@ -65,4 +65,13 @@ describe("Db Add Appointment", () => {
         const appointment = await sut.add(mockAddAppointmentParams());
         expect(appointment).toHaveProperty("id");
     });
+
+    test("Should return the appointment on AddAppointmentRepository with the correct values", async () => {
+        const { sut, addAppointmentRepositoryStub } = makeSut();
+        jest.spyOn(addAppointmentRepositoryStub, "add").mockReturnValueOnce(
+            Promise.resolve(null),
+        );
+        const appointment = await sut.add(mockAddAppointmentParams());
+        expect(appointment).toBeNull();
+    });
 });
