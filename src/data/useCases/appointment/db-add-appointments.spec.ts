@@ -1,34 +1,8 @@
 import { AddAppointmentRepository } from "@/data/protocols/db/appointment/add-appointment-repository";
-import { AppointmentModel } from "@/domain/models/appointment";
-import { AddAppointmentParams } from "@/domain/useCases/appointment/add-appointment";
 import { DbAddAppointment } from "./db-add-appointment";
 import MockDate from "mockdate";
-
-const mockAddAppointmentRepostiory = (): AddAppointmentRepository => {
-    class AddAppointmentRepositoryStub implements AddAppointmentRepository {
-        add(data: AddAppointmentParams): Promise<AppointmentModel> {
-            return Promise.resolve(mockAppointmentModel());
-        }
-    }
-    return new AddAppointmentRepositoryStub();
-};
-
-const mockAppointmentModel = (): AppointmentModel => ({
-    id: "any_id",
-    description: "any_description",
-    pet_id: "any_pet_id",
-    doctor_name: "any_doctor_name",
-    scheduled_date: new Date(),
-    created_at: new Date(),
-    updated_at: new Date(),
-});
-
-const mockAddAppointmentParams = (): AddAppointmentParams => ({
-    description: "any_description",
-    pet_id: "any_pet_id",
-    doctor_name: "any_doctor_name",
-    scheduled_date: new Date(),
-});
+import { mockAddAppointmentRepostiory } from "@/data/test";
+import { mockAddAppointmentParams } from "@/domain/test";
 
 type SutTypes = {
     sut: DbAddAppointment;
