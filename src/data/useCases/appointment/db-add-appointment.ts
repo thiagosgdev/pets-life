@@ -9,6 +9,9 @@ export class DbAddAppointment implements AddAppointmentRepository {
 
     async add(data: AddAppointmentParams): Promise<AppointmentModel> {
         const appointment = await this.addAppointmentRepository.add(data);
-        return appointment;
+        if (appointment) {
+            return appointment;
+        }
+        return null;
     }
 }
