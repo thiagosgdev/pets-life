@@ -46,4 +46,11 @@ describe("Appointment Postgres Repository", () => {
         const appointment = await sut.add(appointmentParams);
         expect(appointment).toHaveProperty("id");
     });
+
+    test("Should throw if add() throws", async () => {
+        const { sut } = makeSut();
+        jest.spyOn(sut, "add").mockReturnValueOnce(Promise.reject(new Error()));
+        const promise = sut.add(mockAddAppointmentParams());
+        await expect(promise).rejects.toThrow();
+    });
 });
