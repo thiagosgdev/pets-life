@@ -1,5 +1,8 @@
 import { AppointmentModel } from "../models/appointment";
-import { AddAppointmentParams } from "../useCases/appointment/add-appointment";
+import {
+    AddAppointment,
+    AddAppointmentParams,
+} from "../useCases/appointment/add-appointment";
 
 export const mockAppointmentModel = (): AppointmentModel => ({
     id: "any_id",
@@ -17,3 +20,12 @@ export const mockAddAppointmentParams = (): AddAppointmentParams => ({
     doctor_name: "any_doctor_name",
     scheduled_date: new Date(),
 });
+
+export const mockAddAppointment = (): AddAppointment => {
+    class AddAppointmentStub implements AddAppointment {
+        async add(data: AddAppointmentParams): Promise<AppointmentModel> {
+            return Promise.resolve(mockAppointmentModel());
+        }
+    }
+    return new AddAppointmentStub();
+};
