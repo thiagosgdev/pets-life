@@ -10,17 +10,24 @@ export class AddAppointmentController implements Controller {
     constructor(private readonly addAppointment: AddAppointment) {}
 
     async handle(request: HttpRequest): Promise<HttpResponse> {
-        const data: AddAppointmentParams = request.body;
-        const appointment = await this.addAppointment.add(data);
-        if (appointment) {
+        try {
+            const data: AddAppointmentParams = request.body;
+            const appointment = await this.addAppointment.add(data);
+            if (appointment) {
+                return {
+                    status: 201,
+                    body: appointment,
+                };
+            }
             return {
-                status: 201,
-                body: appointment,
+                status: 200,
+                body: "Error - Check the appointment values",
+            };
+        } catch (error) {
+            return {
+                status: 500,
+                body: "Internal server error",
             };
         }
-        return {
-            status: 200,
-            body: "Error - Check the appointment values",
-        };
     }
 }
