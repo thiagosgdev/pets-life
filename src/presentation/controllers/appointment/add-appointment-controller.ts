@@ -11,7 +11,12 @@ export class AddAppointmentController implements Controller {
 
     async handle(request: HttpRequest): Promise<HttpResponse> {
         const data: AddAppointmentParams = request.body;
-        await this.addAppointment.add(data);
-        return null;
+        const appointment = await this.addAppointment.add(data);
+        if (appointment) {
+            return {
+                status: 200,
+                body: appointment,
+            };
+        }
     }
 }

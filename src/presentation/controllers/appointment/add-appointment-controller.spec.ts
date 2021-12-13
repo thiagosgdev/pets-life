@@ -40,4 +40,10 @@ describe("Add Appointment Controller", () => {
         await sut.handle(makeHttpRequest());
         expect(addSpy).toHaveBeenCalledWith(mockAddAppointmentParams());
     });
+
+    test("Should return 200 on AddAppointment success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeHttpRequest());
+        expect(response.status).toBe(200);
+    });
 });
