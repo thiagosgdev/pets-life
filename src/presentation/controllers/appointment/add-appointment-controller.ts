@@ -14,9 +14,13 @@ export class AddAppointmentController implements Controller {
         const appointment = await this.addAppointment.add(data);
         if (appointment) {
             return {
-                status: 200,
+                status: 201,
                 body: appointment,
             };
         }
+        return {
+            status: 200,
+            body: "Error - Check the appointment values",
+        };
     }
 }
