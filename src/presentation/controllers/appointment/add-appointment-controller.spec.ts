@@ -55,4 +55,13 @@ describe("Add Appointment Controller", () => {
         const response = await sut.handle(makeHttpRequest());
         expect(response.status).toBe(200);
     });
+
+    test("Should return 500 if AddAppointment throws", async () => {
+        const { sut, addAppointmentStub } = makeSut();
+        jest.spyOn(addAppointmentStub, "add").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const response = await sut.handle(makeHttpRequest());
+        expect(response.status).toBe(500);
+    });
 });
