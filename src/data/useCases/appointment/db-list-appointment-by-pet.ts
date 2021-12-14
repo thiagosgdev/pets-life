@@ -5,7 +5,7 @@ export class DbListAppointmentByPet implements ListAppointmentByPetRepository {
     constructor(private readonly repository: ListAppointmentByPetRepository) {}
 
     async listByPet(pet_id: string): Promise<AppointmentModel[]> {
-        await this.repository.listByPet(pet_id);
-        return null;
+        const appointments = await this.repository.listByPet(pet_id);
+        return appointments;
     }
 }
