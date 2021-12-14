@@ -42,4 +42,13 @@ describe("Db List Appointment By Pet", () => {
         const appointments = await sut.listByPet("any_pet_id");
         expect(appointments.length).toBe(2);
     });
+
+    test("Should return null on ListAppointmentByPetRepository fail", async () => {
+        const { sut, listAppointmentByPetStub } = makeSut();
+        jest.spyOn(listAppointmentByPetStub, "listByPet").mockReturnValueOnce(
+            Promise.resolve([]),
+        );
+        const appointments = await sut.listByPet("any_pet_id");
+        expect(appointments).toBeNull();
+    });
 });
