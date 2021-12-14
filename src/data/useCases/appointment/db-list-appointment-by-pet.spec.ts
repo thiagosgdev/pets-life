@@ -51,4 +51,13 @@ describe("Db List Appointment By Pet", () => {
         const appointments = await sut.listByPet("any_pet_id");
         expect(appointments).toBeNull();
     });
+
+    test("Should throw if ListAppointmentByPetRepository throws", async () => {
+        const { sut, listAppointmentByPetStub } = makeSut();
+        jest.spyOn(listAppointmentByPetStub, "listByPet").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const appointments = sut.listByPet("any_pet_id");
+        await expect(appointments).rejects.toThrow();
+    });
 });
