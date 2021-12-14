@@ -36,4 +36,10 @@ describe("Db List Appointment By Pet", () => {
         await sut.listByPet("any_pet_id");
         expect(listSpy).toHaveBeenCalledWith("any_pet_id");
     });
+
+    test("Should return the list on ListAppointmentByPetRepository success", async () => {
+        const { sut } = makeSut();
+        const appointments = await sut.listByPet("any_pet_id");
+        expect(appointments.length).toBe(2);
+    });
 });
