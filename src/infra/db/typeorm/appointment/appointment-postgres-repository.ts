@@ -26,5 +26,6 @@ export class AppointmentPostgresRepository
         if (appointments.length > 0) {
             return appointments;
         }
+        return null;
     }
 }
