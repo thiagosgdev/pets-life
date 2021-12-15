@@ -29,6 +29,7 @@ describe("Appointment Postgres Repository", () => {
         await connection.clear();
     });
     afterAll(async () => {
+        await connection.clear();
         await connection.close();
     });
 
@@ -66,9 +67,17 @@ describe("Appointment Postgres Repository", () => {
         const appointmentParams = mockAddAppointmentParams();
         appointmentParams.pet_id = pet.id;
         await sut.add(appointmentParams);
-        appointmentParams.pet_id = pet.id;
         await sut.add(appointmentParams);
         const appointments = await sut.listByPet(pet.id);
         expect(appointments.length).toBe(2);
+    });
+
+    test("Should throw if listByPet() throws", async () => {
+        const { sut } = makeSut();
+        jest.spyOn(sut, "listByPet").mockReturnValueOnce(
+            Promise.reject(new Error()),
+        );
+        const promise = sut.listByPet("any_pet_id");
+        await expect(promise).rejects.toThrow();
     });
 });
