@@ -72,6 +72,13 @@ describe("Appointment Postgres Repository", () => {
         expect(appointments.length).toBe(2);
     });
 
+    test("Should return null on listByPet() fail", async () => {
+        const { sut } = makeSut();
+        jest.spyOn(sut, "listByPet").mockReturnValueOnce(Promise.resolve(null));
+        const promise = await sut.listByPet("any_pet_id");
+        expect(promise).toBeNull();
+    });
+
     test("Should throw if listByPet() throws", async () => {
         const { sut } = makeSut();
         jest.spyOn(sut, "listByPet").mockReturnValueOnce(
