@@ -53,4 +53,22 @@ describe("Appointment Postgres Repository", () => {
         const promise = sut.add(mockAddAppointmentParams());
         await expect(promise).rejects.toThrow();
     });
+
+    test("Should return the appointments on listByPet() success", async () => {
+        const { sut, petPostgresRepository, addAccountPostgresRepository } =
+            makeSut();
+        const account = await addAccountPostgresRepository.add(
+            mockAddAccountParams(),
+        );
+        const pet = await petPostgresRepository.add(
+            Object.assign(mockAddPetParams(), { account_id: account.id }),
+        );
+        const appointmentParams = mockAddAppointmentParams();
+        appointmentParams.pet_id = pet.id;
+        await sut.add(appointmentParams);
+        appointmentParams.pet_id = pet.id;
+        await sut.add(appointmentParams);
+        const appointments = await sut.listByPet(pet.id);
+        expect(appointments.length).toBe(2);
+    });
 });
