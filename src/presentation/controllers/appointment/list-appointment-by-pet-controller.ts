@@ -10,7 +10,12 @@ export class ListAppointmentByPetController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         const { pet_id } = httpRequest.body;
-        await this.listAppointmentByPet.listByPet(pet_id);
-        return null;
+        const appointments = await this.listAppointmentByPet.listByPet(pet_id);
+        if (appointments.length > 0) {
+            return {
+                status: 200,
+                body: appointments,
+            };
+        }
     }
 }
