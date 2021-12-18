@@ -42,4 +42,10 @@ describe("List Appointments By Pet Controller", () => {
         await sut.handle(makeFakeRequest());
         expect(listSpy).toHaveBeenCalledWith("any_pet_id");
     });
+
+    test("Should return 200 on ListAppoinments success", async () => {
+        const { sut } = makeSut();
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(200);
+    });
 });
