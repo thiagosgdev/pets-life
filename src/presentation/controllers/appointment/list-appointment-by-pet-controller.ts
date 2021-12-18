@@ -17,5 +17,11 @@ export class ListAppointmentByPetController implements Controller {
                 body: appointments,
             };
         }
+        return {
+            status: 204,
+            body: {
+                message: "Verify the pet id informed",
+            },
+        };
     }
 }
