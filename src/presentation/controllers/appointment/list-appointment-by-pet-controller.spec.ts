@@ -48,4 +48,13 @@ describe("List Appointments By Pet Controller", () => {
         const response = await sut.handle(makeFakeRequest());
         expect(response.status).toBe(200);
     });
+
+    test("Should return 204 on ListAppoinments fail", async () => {
+        const { sut, listAppointmentByPet } = makeSut();
+        jest.spyOn(listAppointmentByPet, "listByPet").mockReturnValueOnce(
+            Promise.resolve([]),
+        );
+        const response = await sut.handle(makeFakeRequest());
+        expect(response.status).toBe(204);
+    });
 });
