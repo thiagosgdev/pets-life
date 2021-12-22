@@ -10,7 +10,7 @@ export class ListAppointmentByPetController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const { pet_id } = httpRequest.body;
+            const { pet_id } = httpRequest.params;
             const appointments = await this.listAppointmentByPet.listByPet(
                 pet_id,
             );
