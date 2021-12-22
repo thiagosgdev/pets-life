@@ -5,7 +5,7 @@ import { HttpRequest } from "@/presentation/protocols";
 import { ListAppointmentByPetController } from "./list-appointment-by-pet-controller";
 
 const makeFakeRequest = (): HttpRequest => ({
-    body: {
+    params: {
         pet_id: "any_pet_id",
     },
 });
